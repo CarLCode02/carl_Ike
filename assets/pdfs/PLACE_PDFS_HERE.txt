@@ -1,0 +1,5 @@
+Put your PDF files in this folder.
+
+Example file name used in the app right now:
+- medical_center_chief_office_1.pdf
+
