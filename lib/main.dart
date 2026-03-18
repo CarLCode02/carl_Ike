@@ -12,12 +12,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-<<<<<<< HEAD
-      debugShowCheckedModeBanner: false,
-      title: 'BICOL REGION GENERAL HOSPITAL AND GERIATRIC MEDICAL CENTER',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomePage(),
-=======
       title: 'Flutter Demo1',
       theme: ThemeData(
         // This is the theme of your application.
@@ -37,8 +31,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
->>>>>>> b53d1e2e522075355b8871e37f97d467d811c53f
+      home: HomePage(),
     );
   }
 }
