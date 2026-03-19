@@ -13,7 +13,7 @@ class FeedbackComplaintsView extends StatefulWidget {
 class _FeedbackComplaintsViewState extends State<FeedbackComplaintsView> {
   String? opened;
 
-  static const String _pdf1 = 'assets/pdfs/feedback_complaints_1.pdf';
+  static const String _pdf1 = 'assets/pdfs/InternalMedicalService.pdf';
 
   List<String> get services {
     return widget.buttonNames ??
