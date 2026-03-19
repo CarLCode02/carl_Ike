@@ -67,10 +67,19 @@ flutter:
 
   assets:
     - assets/pdfs/PDF.pdf
-    - assets/pdfs/medical.pdf
     - assets/pdfs/InternalMedicalService.pdf
     - assets/pdfs/ListOffice.pdf
     - assets/pdfs/Mechanism.pdf
+
+    - assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf
+    - assets/BRGHGMC/MSD/External/Provision of Laboratory Services for Out-Patients.pdf
+    - assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf
+    - assets/BRGHGMC/MSD/External/ABPM.pdf
+    - assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf
+    - assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf
+    - assets/BRGHGMC/MSD/External/Processing of Request for Two-Dimensional Echocardiography with Doppler Studies.pdf
+    - assets/BRGHGMC/MSD/External/Outpatient Physical Therapy Treatment.pdf
+    
     
     
 

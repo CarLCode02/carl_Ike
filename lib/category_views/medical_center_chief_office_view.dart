@@ -27,12 +27,14 @@ class _MedicalCenterChiefOfficeViewState
 
   // string path of assets declared
   static const String _chiefOfficePdf1 = 'assets/pdfs/medical.pdf';
+  static const String _chiefOfficePdf2 = 'assets/pdfs/PDF.pdf';
 
   // list of buttons declared in string for calling
   List<String> get services {
     return widget.buttonNames ??
         const [
           'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unitf',
+        'try',
         ];
   }
 
@@ -78,7 +80,8 @@ class _MedicalCenterChiefOfficeViewState
 
     // checks if the tapped button is the first one in the list
     // this is how we know which pdf to show per button
-    final isFirstButton = selected == services.first;
+    final isFirstButton = selected == services[0];
+    final isSecondButton = selected == services[1];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,6 +94,8 @@ class _MedicalCenterChiefOfficeViewState
             // if first button, show its pdf, else show placeholder
             child: isFirstButton
                 ? _pdfPreview(assetPath: _chiefOfficePdf1)
+                :isSecondButton
+                ? _pdfPreview(assetPath: _chiefOfficePdf2)
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
