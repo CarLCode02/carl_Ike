@@ -170,10 +170,12 @@ class _FeedbackComplaintsViewState extends State<FeedbackComplaintsView> {
             },
           ),
           const SizedBox(width: 4),
-          Text(
-            opened ?? 'View',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: Text(
+              opened ?? 'View',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
