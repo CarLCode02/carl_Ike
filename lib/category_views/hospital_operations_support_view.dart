@@ -22,22 +22,7 @@ class _HospitalOperationsSupportViewState
     extends State<HospitalOperationsSupportView> {
   String? opened;
 
-  // Map each service to its PDF file
-  late Map<String, String> servicePdfMap;
-
-  @override
-  void initState() {
-    super.initState();
-    servicePdfMap = _buildServicePdfMap();
-  }
-
-  Map<String, String> _buildServicePdfMap() {
-    return {
-      'Corrective Maintenance of Information and Communication Technology(ICT) Equipment': 'assets/pdfs/InternalMedicalService.pdf',
-      'Fabrication of Linen': 'assets/pdfs/PDF.pdf',
-     // for (String service in services) service: 'assets/pdfs/medical.pdf'
-    };
-  }
+  static const String _pdf1 = 'assets/pdfs/hospital_operations_support_1.pdf';
 
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
@@ -82,7 +67,7 @@ class _HospitalOperationsSupportViewState
       'Procurement Procedure for Alternative Mode of Procurement - Small Value Procurement/Shopping (Walk-in Suppliers)',
       'Purchasing of Bidding Documents Through Manual Payment',
       'Purchasing of Bidding Documents Through Online Payment',
-      'Receiving of Deliveries, Supplies, Materials and Equipme',
+      'Receiving of Deliveries, Supplies, Materials and Equipment',
       'Releasing of Checks',
     ];
   }
@@ -120,6 +105,7 @@ class _HospitalOperationsSupportViewState
     }
 
     final selected = opened;
+    final isFirstButton = selected == services.first;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,8 +114,8 @@ class _HospitalOperationsSupportViewState
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: selected != null
-                ? _pdfPreview(assetPath: servicePdfMap[selected] ?? 'assets/pdfs/medical.pdf')
+            child: isFirstButton
+                ? _pdfPreview(assetPath: _pdf1)
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -141,7 +127,7 @@ class _HospitalOperationsSupportViewState
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text('No PDF.', style: TextStyle(fontSize: 14)),
+                      const Text('Ulllolll', style: TextStyle(fontSize: 14)),
                     ],
                   ),
           ),
