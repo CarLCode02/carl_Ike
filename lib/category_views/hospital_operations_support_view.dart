@@ -22,7 +22,7 @@ class _HospitalOperationsSupportViewState
     extends State<HospitalOperationsSupportView> {
   String? opened;
 
-  static const String _pdf1 = 'assets/pdfs/InternalMedicalService.pdf';
+  static const String _pdf1 = 'assets/pdfs/medical.pdf';
 
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
