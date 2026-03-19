@@ -23,6 +23,7 @@ class _HospitalOperationsSupportViewState
   String? opened;
 
   static const String _pdf1 = 'assets/pdfs/medical.pdf';
+  static const String _pdf2 = 'assets/pdfs/medical.pdf';
 
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
