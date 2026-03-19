@@ -107,16 +107,17 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
             padding: const EdgeInsets.all(16),
             child: isFirstButton
                 ? _pdfPreview(assetPath: _pdf1)
-                : isThirdButton
-                ? _pdfPreview(assetPath: _pdf2)
-                : isFourthButton
-                ? _pdfPreview(assetPath: _pdf3)
-                : isFifthButton
-                ? _pdfPreview(assetPath: _MedicalServiceDivisionViewState._pdf4)
-                : isSixthButton
-                ? _pdfPreview(assetPath: _pdf5)
                 : isSecondButton
+                ? _pdfPreview(assetPath: _pdf2)
+                : isThirdButton
+                ? _pdfPreview(assetPath: _pdf3)
+                : isFourthButton
+                ? _pdfPreview(assetPath: _pdf4)
+                : isFifthButton
+                ? _pdfPreview(assetPath: _pdf5)
+                : isSixthButton
                 ? _pdfPreview(assetPath: _pdf6)
+                
                 : isSeventhButton
                 ? _pdfPreview(assetPath: _pdf7)
                 : isEightButton
