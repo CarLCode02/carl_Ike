@@ -22,8 +22,22 @@ class _HospitalOperationsSupportViewState
     extends State<HospitalOperationsSupportView> {
   String? opened;
 
-  static const String _pdf1 = 'assets/pdfs/medical.pdf';
-  static const String _pdf2 = 'assets/pdfs/medical.pdf';
+  // Map each service to its PDF file
+  late Map<String, String> servicePdfMap;
+
+  @override
+  void initState() {
+    super.initState();
+    servicePdfMap = _buildServicePdfMap();
+  }
+
+  Map<String, String> _buildServicePdfMap() {
+    return {
+      'Corrective Maintenance of Information and Communication Technology(ICT) Equipment': 'assets/pdfs/InternalMedicalService.pdf',
+      'Fabrication of Linen': 'assets/pdfs/PDF.pdf',
+     // for (String service in services) service: 'assets/pdfs/medical.pdf'
+    };
+  }
 
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
@@ -106,7 +120,6 @@ class _HospitalOperationsSupportViewState
     }
 
     final selected = opened;
-    final isFirstButton = selected == services.first;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,8 +128,8 @@ class _HospitalOperationsSupportViewState
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: isFirstButton
-                ? _pdfPreview(assetPath: _pdf1)
+            child: selected != null
+                ? _pdfPreview(assetPath: servicePdfMap[selected] ?? 'assets/pdfs/medical.pdf')
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
