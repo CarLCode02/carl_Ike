@@ -34,7 +34,7 @@ class _MedicalCenterChiefOfficeViewState
     return widget.buttonNames ??
         const [
           'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unitf',
-        'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unitf',
+        'try',
         ];
   }
 
@@ -80,8 +80,8 @@ class _MedicalCenterChiefOfficeViewState
 
     // checks if the tapped button is the first one in the list
     // this is how we know which pdf to show per button
-    final isFirstButton = selected == services.first;
-    final isSecondButton = selected == services.last;
+    final isFirstButton = selected == services[0];
+    final isSecondButton = selected == services[1];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
