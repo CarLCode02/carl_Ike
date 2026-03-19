@@ -13,7 +13,7 @@ class ListOfOfficesView extends StatefulWidget {
 class _ListOfOfficesViewState extends State<ListOfOfficesView> {
   String? opened;
 
-  static const String _pdf1 = 'assets/pdfs/PDF.pdf';
+  static const String _pdf1 = 'assets/pdfs/ListOffice.pdf';
 
   List<String> get services {
     return widget.buttonNames ??
@@ -78,7 +78,7 @@ class _ListOfOfficesViewState extends State<ListOfOfficesView> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text('Ulllolll', style: TextStyle(fontSize: 14)),
+                      const Text('No PDF YET', style: TextStyle(fontSize: 14)),
                     ],
                   ),
           ),

@@ -21,7 +21,7 @@ class NursingServiceDivisionView extends StatefulWidget {
 class _NursingServiceDivisionViewState extends State<NursingServiceDivisionView> {
   String? opened;
 // string path of assets decalred
-  static const String _pdf1 = 'assets/pdfs/nursing_service_division_1.pdf';
+  static const String _pdf1 = 'assets/pdfs/InternalMedicalService.pdf';
 // list of button declared in string for calling
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
@@ -118,7 +118,7 @@ class _NursingServiceDivisionViewState extends State<NursingServiceDivisionView>
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text('Ulllolll', style: TextStyle(fontSize: 14)),
+                      const Text('No pdf yet', style: TextStyle(fontSize: 14)),
                     ],
                   ),
           ),

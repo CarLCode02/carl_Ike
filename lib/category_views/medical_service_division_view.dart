@@ -21,7 +21,7 @@ class MedicalServiceDivisionView extends StatefulWidget {
 class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView> {
   String? opened;
 
-  static const String _pdf1 = 'assets/pdfs/medical_service_division_1.pdf';
+  static const String _pdf1 = 'assets/pdfs/InternalMedicalService.pdf';
 
 // lsit of button in string declaration
   List<String> get services {
@@ -101,7 +101,7 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text('Ulllolll', style: TextStyle(fontSize: 14)),
+                      const Text('No Pdf Yet', style: TextStyle(fontSize: 14)),
                     ],
                   ),
           ),
