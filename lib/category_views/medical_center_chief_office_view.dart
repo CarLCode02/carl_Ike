@@ -102,7 +102,7 @@ class _MedicalCenterChiefOfficeViewState
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text('Ulllolll', style: TextStyle(fontSize: 14)),
+                      const Text('no pdf imported', style: TextStyle(fontSize: 14)),
                     ],
                   ),
           ),

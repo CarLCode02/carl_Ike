@@ -22,7 +22,8 @@ class _HospitalOperationsSupportViewState
     extends State<HospitalOperationsSupportView> {
   String? opened;
 
-  static const String _pdf1 = 'assets/pdfs/hospital_operations_support_1.pdf';
+  static const String _pdf1 = 'assets/pdfs/medical.pdf';
+  static const String _pdf2 = 'assets/pdfs/medical.pdf';
 
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
@@ -127,7 +128,7 @@ class _HospitalOperationsSupportViewState
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text('Ulllolll', style: TextStyle(fontSize: 14)),
+                      const Text('No PDF.', style: TextStyle(fontSize: 14)),
                     ],
                   ),
           ),

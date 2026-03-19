@@ -68,6 +68,9 @@ flutter:
   assets:
     - assets/pdfs/PDF.pdf
     - assets/pdfs/medical.pdf
+    - assets/pdfs/InternalMedicalService.pdf
+    - assets/pdfs/ListOffice.pdf
+    - assets/pdfs/Mechanism.pdf
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
