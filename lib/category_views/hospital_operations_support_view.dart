@@ -25,7 +25,7 @@ class _HospitalOperationsSupportViewState
   static const String _pdf1 = 'assets/pdfs/hospital_operations_support_1.pdf';
 
   List<String> get services {
-    final type = widget.serviceType ?? 'External Services';
+    final type = widget.serviceType ?? 'Externa Services';
     if (type == 'Internal Services') {
       return widget.internalButtonNames ??
           const [
