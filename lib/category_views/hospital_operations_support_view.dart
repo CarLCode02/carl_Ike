@@ -177,7 +177,7 @@ class _HospitalOperationsSupportViewState
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text('No PDF.', style: TextStyle(fontSize: 14)),
+                      const Text('No PD.', style: TextStyle(fontSize: 14)),
                     ],
                   ),
           ),

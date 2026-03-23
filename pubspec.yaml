@@ -128,7 +128,7 @@ flutter:
     - assets/BRGHGMC/ASD/External/Patient Classification MSS - Emergency Room.pdf
     - assets/BRGHGMC/ASD/External/Tube Feeding Instruction to Patients Watcher_Patient.pdf
     
-    #pdf for Host Module Internal
+    #pdf for Host Module Internals
     - assets/BRGHGMC/Host/Internal/Corrective Maintenance of Information and Communication Technology (ICT) Equipment.pdf
     - assets/BRGHGMC/Host/Internal/Fabrication of Linen.pdf
     - assets/BRGHGMC/Host/Internal/Issuance of Clean Linen.pdf
