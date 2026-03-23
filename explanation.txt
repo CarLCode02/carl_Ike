@@ -1,0 +1,107 @@
+EXPLANATION OF CHANGES MADE TO PREVIEW INTERNAL PDF FILES
+==========================================================
+
+Here is a full breakdown of what was added and where, and what each part does.
+
+
+1. NEW PARAMETER - internalButtonNames
+---------------------------------------
+Where: Inside the widget constructor (StatefulWidget class)
+
+Code added:
+  final List<String>? internalButtonNames;
+
+What it does:
+  Allows you to optionally pass a custom list of internal button names from outside.
+  If you don't pass anything, it falls back to the hardcoded default internal list inside the file.
+
+
+2. INTERNAL PDF PATH CONSTANTS
+--------------------------------
+Where: At the top of the state class, alongside the external pdf paths
+
+Code added (example from NSD):
+  static const String _int1 = 'assets/BRGHGMC/NSD/Internal/Admission and Discharge of Patient to Post-Anesthesia Care Unit.pdf';
+  static const String _int2 = 'assets/BRGHGMC/NSD/Internal/Dispensing of Medical Supplies in Clinical Areas and Sections of the Hospital.pdf';
+  static const String _int3 = 'assets/BRGHGMC/NSD/Internal/Management of Patient for Surgery.pdf';
+  static const String _int4 = 'assets/BRGHGMC/NSD/Internal/Sterilization of Medical Supplies and Surgical Instruments.pdf';
+
+What it does:
+  These are just stored file paths pointing to the internal PDF files inside the assets folder.
+  Each constant matches one button in the internal services list.
+
+
+3. SERVICES GETTER UPDATED
+----------------------------
+Where: The List<String> get services method inside the state class
+
+Code added:
+  List<String> get services {
+    final type = widget.serviceType ?? 'External Services';
+    if (type == 'Internal Services') {
+      return internalButtonNames ?? const [ ...internal button names... ];
+    }
+    return externalButtonNames ?? const [ ...external button names... ];
+  }
+
+What it does:
+  Before this change, services always returned the same external list no matter what.
+  Now it checks what the user selected from the dropdown (serviceType).
+  If the user picked Internal Services, it returns the internal button list.
+  If the user picked External Services, it returns the external button list.
+  This is what makes the buttons on screen change depending on which service type is selected.
+
+
+4. PDF MAP SPLIT BY INTERNAL OR EXTERNAL
+-----------------------------------------
+Where: Inside the build() method, after the list view check (when a button is already tapped)
+
+Code added:
+  final isInternal = (widget.serviceType ?? '') == 'Internal Services';
+
+  final Map<String, String> pdfMap = isInternal
+      ? {
+          services[0]: _int1,
+          services[1]: _int2,
+          services[2]: _int3,
+          services[3]: _int4,
+        }
+      : {
+          services[0]:  _ext1,
+          services[1]:  _ext2,
+          ...and so on for all external buttons...
+        };
+
+What it does:
+  isInternal checks if the current selected service type is Internal Services.
+
+  pdfMap is a dictionary that connects each button name to its matching PDF file path.
+  Instead of building one big map for all buttons at once, it now builds only the correct map.
+
+  This is also where the crash was fixed.
+  Before the fix, both the internal map and external map were built at the same time.
+  So when Internal Services was selected (only 4 buttons), the code still tried to access
+  services[4] through services[19] for the external map, which caused the RangeError crash.
+  Now only one map is built depending on which service type is active, so no crash.
+
+
+5. PDF PATH LOOKUP
+-------------------
+Where: Right after the pdfMap is built, still inside build()
+
+Code added:
+  final pdfPath = pdfMap[selected];
+
+What it does:
+  selected is the button title the user tapped.
+  This line looks up that title in the pdfMap to find the matching PDF file path.
+  If a match is found, the PDF viewer is shown.
+  If no match is found, a placeholder text is shown instead.
+
+
+SUMMARY
+--------
+- The services getter decides which buttons to show based on internal or external selection.
+- The pdf path constants store the file locations for each button.
+- The pdfMap connects button names to their pdf paths, built only for the active service type.
+- The pdfPath lookup finds the right pdf for the tapped button and shows it in the viewer.

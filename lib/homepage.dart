@@ -80,8 +80,8 @@ class _HomePageState extends State<HomePage> {
                     index: 0,
                     categoryKey: 'chief',
                     hint: 'Medical Center Chief Office',
-                    items: const ['External Services'],
-                    valueIds: const ['ext'],
+                    items: const ['External Services', 'Internal Services'],
+                    valueIds: const ['ext', 'int'],
                   ),
                   const SizedBox(height: 12),
                   _buildDropdown(

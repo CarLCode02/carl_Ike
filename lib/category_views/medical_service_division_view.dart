@@ -30,6 +30,7 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
     static const String _pdf6 = 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf';
   static const String _pdf7 = 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for Out-Patients.pdf';
   static const String _pdf8 = 'assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf';
+  static const String _pdf9 = 'assets/BRGHGMC/MSD/Internal/Special Function Meal Request.pdf';
   
 
 // lsit of button in string declaration
@@ -88,15 +89,25 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
     }
 
     final selected = opened;
-    final isFirstButton = selected == services[0];
-    final isSecondButton = selected == services[1];
-     final isThirdButton = selected == services[2];
-    final isFourthButton = selected == services[3];
-     final isFifthButton = selected == services[4];
-    final isSixthButton = selected == services[5];
-    final isSeventhButton = selected == services[6];
-    final isEightButton = selected == services[7];
+    final isInternal = (widget.serviceType ?? '') == 'Internal Services';
 
+    // maps each button to its pdf path
+    final Map<String, String> pdfMap = isInternal
+        ? {
+            services[0]: _pdf9,
+          }
+        : {
+            services[0]: _pdf1,
+            services[1]: _pdf2,
+            services[2]: _pdf3,
+            services[3]: _pdf4,
+            services[4]: _pdf5,
+            services[5]: _pdf6,
+            services[6]: _pdf7,
+            services[7]: _pdf8,
+          };
+
+    final pdfPath = pdfMap[selected];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,22 +116,8 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: isFirstButton
-                ? _pdfPreview(assetPath: _pdf1)
-                : isThirdButton
-                ? _pdfPreview(assetPath: _pdf2)
-                : isFourthButton
-                ? _pdfPreview(assetPath: _pdf3)
-                : isFifthButton
-                ? _pdfPreview(assetPath: _MedicalServiceDivisionViewState._pdf4)
-                : isSixthButton
-                ? _pdfPreview(assetPath: _pdf5)
-                : isSecondButton
-                ? _pdfPreview(assetPath: _pdf6)
-                : isSeventhButton
-                ? _pdfPreview(assetPath: _pdf7)
-                : isEightButton
-                ? _pdfPreview(assetPath: _pdf8)
+            child: pdfPath != null
+                ? _pdfPreview(assetPath: pdfPath)
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -224,10 +221,12 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
             },
           ),
           const SizedBox(width: 4),
-          Text(
-            opened ?? 'View',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: Text(
+              opened ?? 'View',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
