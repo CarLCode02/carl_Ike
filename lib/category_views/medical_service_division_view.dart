@@ -25,10 +25,10 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
   static const String _pdf1 = 'assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf';
   static const String _pdf2 = 'assets/BRGHGMC/MSD/External/Outpatient Physical Therapy Treatment.pdf';
     static const String _pdf3 = 'assets/BRGHGMC/MSD/External/ABPM.pdf';
-      static const String _pdf4 = 'assets/BRGHGMC/MSD/External/Processing of Request for Two-Dimensional Echocardiography with Doppler Studies.pdf';
-  static const String _pdf5 = 'assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf';
+      static const String _pdf4 = 'assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf';
+  static const String _pdf5 = 'assets/BRGHGMC/MSD/External/Processing of Request for Two-Dimensional Echocardiography with Doppler Studies.pdf';
     static const String _pdf6 = 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf';
-  static const String _pdf7 = 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for Out-Patients.pdf';
+  static const String _pdf7 = 'assets/BRGHGMC/MSD/External/outp.pdf';
   static const String _pdf8 = 'assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf';
   static const String _pdf9 = 'assets/BRGHGMC/MSD/Internal/Special Function Meal Request.pdf';
   
