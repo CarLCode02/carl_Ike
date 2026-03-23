@@ -7,12 +7,15 @@ import 'package:pdfrx/pdfrx.dart';
 class MedicalCenterChiefOfficeView extends StatefulWidget {
   // label shown at the top of the list
   final String? serviceType;
-  // optional custom button names, if not passed uses the default list below
+  // optional custom button names for external, if not passed uses the default list below
   final List<String>? buttonNames;
+  // optional custom button names for internal services
+  final List<String>? internalButtonNames;
   const MedicalCenterChiefOfficeView({
     super.key,
     required this.serviceType,
     this.buttonNames,
+    this.internalButtonNames,
   });
 
   @override
@@ -26,15 +29,24 @@ class _MedicalCenterChiefOfficeViewState
   String? opened;
 
   // string path of assets declared
-  static const String _chiefOfficePdf1 = 'assets/pdfs/medical.pdf';
-  static const String _chiefOfficePdf2 = 'assets/pdfs/PDF.pdf';
+  static const String _chiefOfficePdf1 = 'assets/BRGHGMC/MCCO/External/medical.pdf';
+  // internal services pdf path
+  static const String _chiefOfficeInternalPdf1 = 'assets/pdfs/PDF.pdf';
 
   // list of buttons declared in string for calling
+  // if internal services selected, show internal buttons, else show external
   List<String> get services {
+    final type = widget.serviceType ?? 'External Services';
+    if (type == 'Internal Services') {
+      return widget.internalButtonNames ??
+          const [
+            'Internal Service 1',
+          ];
+    }
     return widget.buttonNames ??
         const [
           'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unitf',
-        'try',
+          'try',
         ];
   }
 
@@ -81,7 +93,9 @@ class _MedicalCenterChiefOfficeViewState
     // checks if the tapped button is the first one in the list
     // this is how we know which pdf to show per button
     final isFirstButton = selected == services[0];
-    final isSecondButton = selected == services[1];
+    final isSecondButton = services.length > 1 && selected == services[1];
+    // checks if currently viewing internal services
+    final isInternal = (widget.serviceType ?? '') == 'Internal Services';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,11 +105,11 @@ class _MedicalCenterChiefOfficeViewState
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            // if first button, show its pdf, else show placeholder
+            // if first button, show its pdf (internal or external), else show placeholder
             child: isFirstButton
+                ? _pdfPreview(assetPath: isInternal ? _chiefOfficeInternalPdf1 : _chiefOfficePdf1)
+                : isSecondButton
                 ? _pdfPreview(assetPath: _chiefOfficePdf1)
-                :isSecondButton
-                ? _pdfPreview(assetPath: _chiefOfficePdf2)
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

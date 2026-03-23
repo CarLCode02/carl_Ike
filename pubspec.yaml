@@ -71,15 +71,62 @@ flutter:
     - assets/pdfs/ListOffice.pdf
     - assets/pdfs/Mechanism.pdf
 
+    # MCCO External
+    - assets/BRGHGMC/MCCO/External/medical.pdf
+
+    # MSD External
     - assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf
-    - assets/BRGHGMC/MSD/External/Provision of Laboratory Services for Out-Patients.pdf
-    - assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf
-    - assets/BRGHGMC/MSD/External/ABPM.pdf
-    - assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf
-    - assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf
-    - assets/BRGHGMC/MSD/External/Processing of Request for Two-Dimensional Echocardiography with Doppler Studies.pdf
     - assets/BRGHGMC/MSD/External/Outpatient Physical Therapy Treatment.pdf
-    
+    - assets/BRGHGMC/MSD/External/ABPM.pdf
+    - assets/BRGHGMC/MSD/External/Processing of Request for Two-Dimensional Echocardiography with Doppler Studies.pdf
+    - assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf
+    - assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf
+    - assets/BRGHGMC/MSD/External/Provision of Laboratory Services for Out-Patients.pdf
+    - assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf
+    # MSD Internal
+    - assets/BRGHGMC/MSD/Internal/Special Function Meal Request.pdf
+
+    # NSD External
+    - assets/BRGHGMC/NSD/External/Admission from Emergency Department to Clinical Wards.pdf
+    - assets/BRGHGMC/NSD/External/Admission of Patients to the Acute Care for the Elderly Unit.pdf
+    - assets/BRGHGMC/NSD/External/Admission of Patients to the Clinical Nursing Units.pdf
+    - assets/BRGHGMC/NSD/External/Admission of Patients to the Neonatal Intensive Care Unit.pdf
+    - assets/BRGHGMC/NSD/External/Automated Peritoneal Dialysis Treatment to All PD Patient.pdf
+    - assets/BRGHGMC/NSD/External/Discharge of Patients at the Clinical Nursing Units.pdf
+    - assets/BRGHGMC/NSD/External/Dispensing of Medical Supplies for Admitted Patients.pdf
+    - assets/BRGHGMC/NSD/External/Dispensing of Medical Supplies for Out-Patients.pdf
+    - assets/BRGHGMC/NSD/External/Ears, Nose, Throat (ENT) Department Registration and Consultation.pdf
+    - assets/BRGHGMC/NSD/External/Geriatric OPD Patients.pdf
+    - assets/BRGHGMC/NSD/External/Hemodialysis Treatment for Admitted and Enrolled Hemodialysis Patients.pdf
+    - assets/BRGHGMC/NSD/External/Human Immunodeficiency Virus (HIV) Counseling and Testing Services.pdf
+    - assets/BRGHGMC/NSD/External/Issuance of Hemodialysis Documents.pdf
+    - assets/BRGHGMC/NSD/External/Management of Patient at the Emergency Department.pdf
+    - assets/BRGHGMC/NSD/External/National Tuberculosis Program (NTP) Integrated Delivery of TB Services.pdf
+    - assets/BRGHGMC/NSD/External/Ophthalmology Department Eye Surgery and Laser Procedure.pdf
+    - assets/BRGHGMC/NSD/External/Out-Patient Department Patients Registration and Consultation.pdf
+    - assets/BRGHGMC/NSD/External/Peritoneal Dialysis Exit Site Care and Change of Extension Catheter.pdf
+    - assets/BRGHGMC/NSD/External/Peritoneal Dialysis Patients Registration and Consultation.pdf
+    - assets/BRGHGMC/NSD/External/Peritoneal Dialysis Z Benefit Claim for Enrolled OPD-PD Patients.pdf
+    # NSD Internal
+    - assets/BRGHGMC/NSD/Internal/Admission and Discharge of Patient to Post-Anesthesia Care Unit.pdf
+    - assets/BRGHGMC/NSD/Internal/Dispensing of Medical Supplies in Clinical Areas and Sections of the Hospital.pdf
+    - assets/BRGHGMC/NSD/Internal/Management of Patient for Surgery.pdf
+    - assets/BRGHGMC/NSD/Internal/Sterilization of Medical Supplies and Surgical Instruments.pdf
+
+    # ASD External
+    - assets/BRGHGMC/ASD/External/Classification of Admitted Patients (MSS Inpatient).pdf
+    - assets/BRGHGMC/ASD/External/Dispensing of Drugs and Medicines for In-Patients.pdf
+    - assets/BRGHGMC/ASD/External/Dispensing of Drugs and Medicines for Out-Patients.pdf
+    - assets/BRGHGMC/ASD/External/Enrollment to Point of Service Program.pdf
+    - assets/BRGHGMC/ASD/External/Issuance of Death & Medical Certificate, Medical Abstract and Certificate of Confinement.pdf
+    - assets/BRGHGMC/ASD/External/Issuance of Medical Certificate or Medical Abstract.pdf
+    - assets/BRGHGMC/ASD/External/Issuance of Registered Birth Certificate.pdf
+    - assets/BRGHGMC/ASD/External/Medication Counseling for OPD Geriatric Patientspdf.pdf
+    - assets/BRGHGMC/ASD/External/Nutrition Care Process.pdf
+    - assets/BRGHGMC/ASD/External/Patient Classification (Malasakit Center In–Patient).pdf
+    - assets/BRGHGMC/ASD/External/Patient Classification (Malasakit Center Out-Patient).pdf
+    - assets/BRGHGMC/ASD/External/Patient Classification MSS - Emergency Room.pdf
+    - assets/BRGHGMC/ASD/External/Tube Feeding Instruction to Patients Watcher_Patient.pdf
     
     
 
