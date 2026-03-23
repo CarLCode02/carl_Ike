@@ -56,7 +56,7 @@ class _HospitalOperationsSupportViewState
       'Request of Motor Vehicle for Official Business': 'assets/BRGHGMC/Host/Internal/Request of Motor Vehicle for Official Business.pdf',
       
       // External Services
-      'Access to Closed–Circuit Television Image/Footage': 'assets/BRGHGMC/Host/External/Access to Closed Circuit Television Image_Footage.pdf',
+      'Access to Closed Circuit Television Image/Footage': 'assets/BRGHGMC/Host/External/Access to Closed Circuit Television Image_Footage.pdf',
       'Acceptance of Job Application': 'assets/BRGHGMC/Host/External/Acceptance of Job Application.pdf',
       'Issuance of Official Receipt': 'assets/BRGHGMC/Host/External/Issuance of Official Receipt.pdf',
       'PhilHealth Registration and Status Updating': 'assets/BRGHGMC/Host/External/PhilHealth Registration and Status Updating.pdf',
