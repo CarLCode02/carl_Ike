@@ -127,6 +127,49 @@ flutter:
     - assets/BRGHGMC/ASD/External/Patient Classification (Malasakit Center Out-Patient).pdf
     - assets/BRGHGMC/ASD/External/Patient Classification MSS - Emergency Room.pdf
     - assets/BRGHGMC/ASD/External/Tube Feeding Instruction to Patients Watcher_Patient.pdf
+
+
+    #pdf for Host Module Internals
+    - assets/BRGHGMC/Host/Internal/Corrective Maintenance of Information and Communication Technology (ICT) Equipment.pdf
+    - assets/BRGHGMC/Host/Internal/Fabrication of Linen.pdf
+    - assets/BRGHGMC/Host/Internal/Issuance of Clean Linen.pdf
+    - assets/BRGHGMC/Host/Internal/Leave of Absence Application.pdf
+    - assets/BRGHGMC/Host/Internal/Monitoring of Infrastructure Projects.pdf
+    - assets/BRGHGMC/Host/Internal/Payment of Infrastructure Projects Billing.pdf
+    - assets/BRGHGMC/Host/Internal/Preparation of Payroll for Non-Permanent Employees.pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Obligation Request and Status (ORS)_Budget Utilization Request and Status(BURS).pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Payrolls.pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Purchase Orders (Bidding).pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Purchase Orders (Simple Value Procurement).pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Request for Documents_Records of Employees.pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Carpentry Section.pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Electrical Section.pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Medical Equipment Maintenance Unit.pdf
+    - assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Plumbing Section.pdf
+    - assets/BRGHGMC/Host/Internal/Releasing of Cash Benefits.pdf
+    - assets/BRGHGMC/Host/Internal/Replacement of Identification Card.pdf
+    - assets/BRGHGMC/Host/Internal/Request for Motor Vehicle for Emergency Referral.pdf
+    - assets/BRGHGMC/Host/Internal/Request of Motor Vehicle for Official Business.pdf
+    - assets/BRGHGMC/Host/Internal/Requisition and Issuance of Supplies, Materials and Equipment.pdf
+
+    #pdf for Host Module External
+    - assets/BRGHGMC/Host/External/Acceptance of Job Application.pdf
+    - assets/BRGHGMC/Host/External/Access to Closed Circuit Television Image_Footage.pdf
+    - assets/BRGHGMC/Host/External/Issuance of Official Receipt.pdf
+    - assets/BRGHGMC/Host/External/PhilHealth Registration and Status Updating.pdf
+    - assets/BRGHGMC/Host/External/PhilHealth Status Verification.pdf
+    - assets/BRGHGMC/Host/External/Preparation of Order of Payment.pdf
+    - assets/BRGHGMC/Host/External/Preparation of Statement of Account.pdf
+    - assets/BRGHGMC/Host/External/Processing of Disbursement Vouchers.pdf
+    - assets/BRGHGMC/Host/External/Processing of In-Patient PhilHealth Claims.pdf
+    - assets/BRGHGMC/Host/External/Processing of Out-Patient PhilHealth Claims.pdf
+    - assets/BRGHGMC/Host/External/PPA.pdf
+    - assets/BRGHGMC/Host/External/Procurement Procedure Through Competitive Bidding.pdf
+    - assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Manual Payment.pdf
+    - assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Online Payment.pdf
+    - assets/BRGHGMC/Host/External/Receiving of Deliveries, Supplies, Materials and Equipment.pdf
+    - assets/BRGHGMC/Host/External/Releasing of Checks.pdf
+
     
     
 
