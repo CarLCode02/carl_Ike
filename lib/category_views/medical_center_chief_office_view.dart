@@ -37,19 +37,11 @@ class _MedicalCenterChiefOfficeViewState
   // if internal services selected, show internal buttons, else show external
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
-    if (type == 'Internal Services') {
-      return widget.internalButtonNames ??
-          const [
-            'Internal Service 1',
-          ];
-    }
     return widget.buttonNames ??
         const [
           'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unitf',
-          'try',
           
         ];
-        
   }
 
   @override
