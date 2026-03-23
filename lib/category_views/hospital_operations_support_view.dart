@@ -33,9 +33,45 @@ class _HospitalOperationsSupportViewState
 
   Map<String, String> _buildServicePdfMap() {
     return {
-      'Corrective Maintenance of Information and Communication Technology(ICT) Equipment': 'assets/pdfs/InternalMedicalService.pdf',
-      'Fabrication of Linen': 'assets/pdfs/PDF.pdf',
-     // for (String service in services) service: 'assets/pdfs/medical.pdf'
+      // Internal Services
+      'Corrective Maintenance of Information and Communication Technology(ICT) Equipment': 'assets/BRGHGMC/Host/Internal/Corrective Maintenance of Information and Communication Technology (ICT) Equipment.pdf',
+      'Fabrication of Linen': 'assets/BRGHGMC/Host/Internal/Fabrication of Linen.pdf',
+      'Issuance of Clean Linen': 'assets/BRGHGMC/Host/Internal/Issuance of Clean Linen.pdf',
+      'Leave of Absence Application': 'assets/BRGHGMC/Host/Internal/Leave of Absence Application.pdf',
+      'Monitoring of Infrastructure Projects': 'assets/BRGHGMC/Host/Internal/Monitoring of Infrastructure Projects.pdf',
+      'Payment of Infrastructure Projects Billing': 'assets/BRGHGMC/Host/Internal/Payment of Infrastructure Projects Billing.pdf',
+      'Preparation of Payroll for Non-Permanent Employees': 'assets/BRGHGMC/Host/Internal/Preparation of Payroll for Non-Permanent Employees.pdf',
+      'Processing of Obligation Request and Status (ORS)/Budget Utilization Request and Status(BURS)': 'assets/BRGHGMC/Host/Internal/Processing of Obligation Request and Status (ORS)_Budget Utilization Request and Status(BURS).pdf',
+      'Processing of Payrolls': 'assets/BRGHGMC/Host/Internal/Processing of Payrolls.pdf',
+      'Processing of Purchase Orders (Bidding)': 'assets/BRGHGMC/Host/Internal/Processing of Purchase Orders (Bidding).pdf',
+      'Processing of Purchase Orders (Simple Value Procurement': 'assets/BRGHGMC/Host/Internal/Processing of Purchase Orders (Simple Value Procurement).pdf',
+      'Processing of Request for Documents/Records of Employees': 'assets/BRGHGMC/Host/Internal/Processing of Request for Documents_Records of Employees.pdf',
+      'Processing of Service Request per Project/Activity in the Carpentry Section': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Carpentry Section.pdf',
+      'Processing of Service Request per Project/Activity in the Medical Equipment Maintenance Unit': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Medical Equipment Maintenance Unit.pdf',
+      'Processing of Service Request per Project/Activity in the Plumbing Section': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Plumbing Section.pdf',
+      'Releasing of Cash Benefits': 'assets/BRGHGMC/Host/Internal/Releasing of Cash Benefits.pdf',
+      'Replacement of Identification Card': 'assets/BRGHGMC/Host/Internal/Replacement of Identification Card.pdf',
+      'Requisition and Issuance of Supplies, Materials and Equipment': 'assets/BRGHGMC/Host/Internal/Requisition and Issuance of Supplies, Materials and Equipment.pdf',
+      'Request for Motor Vehicle for Emergency Referral': 'assets/BRGHGMC/Host/Internal/Request for Motor Vehicle for Emergency Referral.pdf',
+      'Request of Motor Vehicle for Official Business': 'assets/BRGHGMC/Host/Internal/Request of Motor Vehicle for Official Business.pdf',
+      
+      // External Services
+      'Access to Closed–Circuit Television Image/Footage': 'assets/BRGHGMC/Host/External/Access to Closed Circuit Television Image_Footage.pdf',
+      'Acceptance of Job Application': 'assets/BRGHGMC/Host/External/Acceptance of Job Application.pdf',
+      'Issuance of Official Receipt': 'assets/BRGHGMC/Host/External/Issuance of Official Receipt.pdf',
+      'PhilHealth Registration and Status Updating': 'assets/BRGHGMC/Host/External/PhilHealth Registration and Status Updating.pdf',
+      'PhilHealth Status Verification': 'assets/BRGHGMC/Host/External/PhilHealth Status Verification.pdf',
+      'Preparation of Order of Payment': 'assets/BRGHGMC/Host/External/Preparation of Order of Payment.pdf',
+      'Preparation of Statement of Account': 'assets/BRGHGMC/Host/External/Preparation of Statement of Account.pdf',
+      'Processing of Disbursement Vouchers': 'assets/BRGHGMC/Host/External/Processing of Disbursement Vouchers.pdf',
+      'Processing of In-Patient PhilHealth Claims': 'assets/BRGHGMC/Host/External/Processing of In-Patient PhilHealth Claims.pdf',
+      'Processing of Out-Patient PhilHealth Claims': 'assets/BRGHGMC/Host/External/Processing of Out-Patient PhilHealth Claims.pdf',
+      'Procurement Procedure Through Competitive Bidding': 'assets/BRGHGMC/Host/External/Procurement Procedure Through Competitive Bidding.pdf',
+      'Procurement Procedure for Alternative Mode of Procurement - Small Value Procurement/Shopping (Walk-in Suppliers)': 'assets/BRGHGMC/Host/External/PPA.pdf',
+      'Purchasing of Bidding Documents Through Manual Payment': 'assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Manual Payment.pdf',
+      'Purchasing of Bidding Documents Through Online Payment': 'assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Online Payment.pdf',
+      'Receiving of Deliveries, Supplies, Materials and Equipme': 'assets/BRGHGMC/Host/External/Receiving of Deliveries, Supplies, Materials and Equipment.pdf',
+      'Releasing of Checks': 'assets/BRGHGMC/Host/External/Releasing of Checks.pdf',
     };
   }
 
@@ -46,7 +82,7 @@ class _HospitalOperationsSupportViewState
           const [
         'Corrective Maintenance of Information and Communication Technology(ICT) Equipment',
         'Fabrication of Linen',
-        'Issuance of Clean Lines',
+        'Issuance of Clean Linen',
         'Leave of Absence Application',
         'Monitoring of Infrastructure Projects',
         'Payment of Infrastructure Projects Billing',
