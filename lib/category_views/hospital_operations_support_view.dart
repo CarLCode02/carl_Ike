@@ -16,11 +16,14 @@ class HospitalOperationsSupportView extends StatefulWidget {
   @override
   State<HospitalOperationsSupportView> createState() =>
       _HospitalOperationsSupportViewState();
+     
 }
 
 class _HospitalOperationsSupportViewState
     extends State<HospitalOperationsSupportView> {
   String? opened;
+
+  String searchQuery = "";
 
   // Map each service to its PDF file
   late Map<String, String> servicePdfMap;
@@ -77,8 +80,11 @@ class _HospitalOperationsSupportViewState
 
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
+    List<String> baseList; 
+
+
     if (type == 'Internal Services') {
-      return widget.internalButtonNames ??
+      baseList = widget.internalButtonNames ?? 
           const [
         'Corrective Maintenance of Information and Communication Technology(ICT) Equipment',
         'Fabrication of Linen',
@@ -101,12 +107,12 @@ class _HospitalOperationsSupportViewState
         'Request for Motor Vehicle for Emergency Referral',
         'Request of Motor Vehicle for Official Business',
       ];
-    }
-    return widget.externalButtonNames ??
-        const [
-      'Access to Closed Circuit Television Image/Footage',
-      'Acceptance of Job Application',
-      'Issuance of Official Receipt',
+    }else{
+      baseList = widget.externalButtonNames ?? 
+          const [
+        'Access to Closed–Circuit Television Image/Footage',
+        'Acceptance of Job Application',
+        'Issuance of Official Receipt',
       'PhilHealth Registration and Status Updating',
       'PhilHealth Status Verification',
       'Preparation of Order of Payment',
@@ -122,7 +128,14 @@ class _HospitalOperationsSupportViewState
       'Releasing of Checks',
     ];
   }
+  if(searchQuery.isEmpty) return baseList; 
+  return baseList
+     .where((service)=>
+     service.toLowerCase().contains(searchQuery))
+     .toList(
 
+     );
+}
   @override
   Widget build(BuildContext context) {
     if (opened == null) {
@@ -177,7 +190,7 @@ class _HospitalOperationsSupportViewState
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text('No PDF.', style: TextStyle(fontSize: 14)),
+                      const Text('No PD.', style: TextStyle(fontSize: 14)),
                     ],
                   ),
           ),
@@ -242,7 +255,9 @@ class _HospitalOperationsSupportViewState
                 hintText: 'Search services...',
               ),
               onChanged: (value) {
-                setState(() {});
+                setState(() {
+                  searchQuery = value.toLowerCase();
+                });
               },
             ),
           ),
