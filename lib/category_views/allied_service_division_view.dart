@@ -20,6 +20,8 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
   // tracks which button is tapped, null means no button selected yet
   String? opened;
 
+  String _searchQuery = '';
+
   // string path of assets declared
   static const String _pdf1  = 'assets/BRGHGMC/ASD/External/Classification of Admitted Patients (MSS Inpatient).pdf';
   static const String _pdf2  = 'assets/BRGHGMC/ASD/External/Dispensing of Drugs and Medicines for In-Patients.pdf';
@@ -83,7 +85,10 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              children: services.map((t) => _serviceButton(title: t)).toList(),
+              children: services.
+              where((t) => t.toLowerCase().contains(_searchQuery.toLowerCase()))
+                  .map((t) => _serviceButton(title: t))
+                  .toList(),
             ),
           ),
         ],
@@ -194,7 +199,9 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
                 border: InputBorder.none,
                 hintText: 'Search services...',
               ),
-              onChanged: (value) => setState(() {}),
+              onChanged: (value) => setState(() {
+                _searchQuery = value;
+              }),
             ),
           ),
         ],
