@@ -21,6 +21,8 @@ class NursingServiceDivisionView extends StatefulWidget {
 class _NursingServiceDivisionViewState extends State<NursingServiceDivisionView> {
   // tracks which button is tapped, null means no button selected yet
   String? opened;
+    // stores what the user types in the search bar
+  String _searchQuery = '';
 
   // string path of external assets declared
   static const String _ext1  = 'assets/BRGHGMC/NSD/External/Admission from Emergency Department to Clinical Wards.pdf';
@@ -116,7 +118,10 @@ class _NursingServiceDivisionViewState extends State<NursingServiceDivisionView>
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              children: services.map((t) => _serviceButton(title: t)).toList(),
+              children: services.
+              where((t) => t.toLowerCase().contains(_searchQuery.toLowerCase()))
+                  .map((t) => _serviceButton(title: t))
+                  .toList(),
             ),
           ),
         ],
@@ -242,7 +247,10 @@ class _NursingServiceDivisionViewState extends State<NursingServiceDivisionView>
                 border: InputBorder.none,
                 hintText: 'Search services...',
               ),
-              onChanged: (value) => setState(() {}),
+              onChanged: (value) => 
+              setState(() {
+                _searchQuery = value;
+              }),
             ),
           ),
         ],

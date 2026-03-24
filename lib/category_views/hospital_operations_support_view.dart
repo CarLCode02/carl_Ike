@@ -107,12 +107,12 @@ class _HospitalOperationsSupportViewState
         'Request for Motor Vehicle for Emergency Referral',
         'Request of Motor Vehicle for Official Business',
       ];
-    }else{
-      baseList = widget.externalButtonNames ?? 
-          const [
-        'Access to Closed–Circuit Television Image/Footage',
-        'Acceptance of Job Application',
-        'Issuance of Official Receipt',
+    }
+    return widget.externalButtonNames ??
+        const [
+      'Access to Closed Circuit Television Image/Footage',
+      'Acceptance of Job Application',
+      'Issuance of Official Receipt',
       'PhilHealth Registration and Status Updating',
       'PhilHealth Status Verification',
       'Preparation of Order of Payment',
