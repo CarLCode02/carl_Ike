@@ -21,6 +21,9 @@ class MedicalServiceDivisionView extends StatefulWidget {
 class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView> {
   String? opened;
 
+    // stores what the user types in the search bar
+  String _searchQuery = '';
+
 
   static const String _pdf1 = 'assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf';
   static const String _pdf2 = 'assets/BRGHGMC/MSD/External/Outpatient Physical Therapy Treatment.pdf';
@@ -81,7 +84,10 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              children: services.map((t) => _serviceButton(title: t)).toList(),
+              children: services.
+              where((t) => t.toLowerCase().contains(_searchQuery.toLowerCase()))
+                  .map((t) => _serviceButton(title: t))
+                  .toList(),
             ),
           ),
         ],
@@ -194,7 +200,9 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
                 hintText: 'Search services...',
               ),
               onChanged: (value) {
-                setState(() {});
+                setState(() {
+                  _searchQuery = value;
+                });
               },
             ),
           ),
