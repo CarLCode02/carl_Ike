@@ -28,6 +28,9 @@ class _MedicalCenterChiefOfficeViewState
   // tracks which button is tapped, null means no button selected yet
   String? opened;
 
+  // stores what the user types in the search bar
+  String _searchQuery = '';
+
   // string path of assets declared
   static const String _chiefOfficePdf1 = 'assets/BRGHGMC/MCCO/External/medical.pdf';
   // internal services pdf path
@@ -71,10 +74,14 @@ class _MedicalCenterChiefOfficeViewState
           ),
           const SizedBox(height: 8),
           // calling of the declared buttons in string list by index
+          // filters the list based on what the user typed in the search bar
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              children: services.map((t) => _serviceButton(title: t)).toList(),
+              children: services.
+                  where((t) => t.toLowerCase().contains(_searchQuery.toLowerCase()))
+                  .map((t) => _serviceButton(title: t))
+                  .toList(),
             ),
           ),
         ],
@@ -185,8 +192,11 @@ class _MedicalCenterChiefOfficeViewState
                 border: InputBorder.none,
                 hintText: 'Search services...',
               ),
+              // saves what the user types and rebuilds the list
               onChanged: (value) {
-                setState(() {});
+                setState(() {
+                  _searchQuery = value;
+                });
               },
             ),
           ),
