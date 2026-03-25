@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'category_views/allied_service_division_view.dart';
 import 'category_views/feedback_complaints_view.dart';
@@ -36,10 +37,14 @@ class _HomePageState extends State<HomePage> {
               backgroundImage: NetworkImage(logoUrl),
             ),
             const SizedBox(width: 12),
-            const Expanded(
+             Expanded(
               child: Text(
-                'BICOL REGION GENERAL HOSPITAL AND GERIATRIC MEDICAL CENTER',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 128, 0)),
+                'BICOL REGION GENERAL HOSPITAL AND GERIATRIC MEDICAL CENTER', style: GoogleFonts.inter(
+                fontSize: 21,
+                color: Color.fromARGB(255, 0, 128, 0),
+                fontWeight: FontWeight.w800, 
+                ),
+                
               ),
             ),
           ],
@@ -162,23 +167,42 @@ class _HomePageState extends State<HomePage> {
       padding: EdgeInsets.all(20),
        child: ClipRRect(
       borderRadius: BorderRadius.circular(15),
-      child: Image.asset('assets/bg.jpg', ),
+      child: Image.asset('assets/bg.jpg', height: 200, fit: BoxFit.cover, ),
     ),
     ),
    
-
+    
     Transform.translate(
-      offset: Offset(0, -50),
+      offset: Offset(0, -70),
+    child: Container(
+      
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(160),
+        border: Border.all(
+          
+          color: Colors.green,
+          width: 5.0,
+        ),
+      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(160),
+        
+    
         child: Image.network(
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMyvIs_OKj60qVtecCudySQlfVXsjwIrZ8w&s',
         ),
       ),
+      ),
     ),
+
       
     Text('Anti-Red Tape Authority (ARTA)',
-    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, height: -2),
+    style: GoogleFonts.inter(
+    fontSize: 27,
+    color: Color.fromARGB(255, 0, 128, 0),
+    fontWeight: FontWeight.w800, 
+    height: -2,
+  ),
     )
   ],
 )
