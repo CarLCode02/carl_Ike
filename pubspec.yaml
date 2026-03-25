@@ -70,6 +70,7 @@ flutter:
     - assets/pdfs/InternalMedicalService.pdf
     - assets/pdfs/ListOffice.pdf
     - assets/pdfs/Mechanism.pdf
+    - assets/bg.jpg
 
     # MCCO External
     - assets/BRGHGMC/MCCO/External/medical.pdf

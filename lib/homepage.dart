@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
             const Expanded(
               child: Text(
                 'BICOL REGION GENERAL HOSPITAL AND GERIATRIC MEDICAL CENTER',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 128, 0)),
               ),
             ),
           ],
@@ -153,14 +153,34 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSecondContainerView() {
-    if (_selectedCategoryKey == null) {
-      return const Center(
-        child: Text(
-          'Select a category on the left',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  if (_selectedCategoryKey == null) {
+    return Center(
+      child: Column(
+        
+  children: [
+    ClipRRect(
+      
+      borderRadius: BorderRadius.circular(15),
+      child: Image.asset('assets/bg.jpg', ),
+    ),
+
+    Transform.translate(
+      offset: Offset(0, -50),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(160),
+        child: Image.network(
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMyvIs_OKj60qVtecCudySQlfVXsjwIrZ8w&s',
         ),
-      );
-    }
+      ),
+    ),
+
+    Text('Anti-Red Tape Authority (ARTA)',
+    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+    )
+  ],
+)
+    );
+  }
 
     if (_selectedCategoryKey == 'chief') {
       return MedicalCenterChiefOfficeView(serviceType: _selectedServiceType);
