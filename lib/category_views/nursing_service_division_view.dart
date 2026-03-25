@@ -304,7 +304,7 @@ class _NursingServiceDivisionViewState extends State<NursingServiceDivisionView>
         onPressed: () => setState(() => opened = title),
         child: Row(
           children: [
-            const Icon(Icons.picture_as_pdf, color: Colors.blue),
+            const Icon(Icons.picture_as_pdf, color: Colors.red),
             const SizedBox(width: 12),
             // button label
             Expanded(

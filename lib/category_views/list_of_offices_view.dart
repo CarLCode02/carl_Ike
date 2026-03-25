@@ -199,7 +199,7 @@ class _ListOfOfficesViewState extends State<ListOfOfficesView> {
         },
         child: Row(
           children: [
-            const Icon(Icons.picture_as_pdf, color: Colors.blue),
+            const Icon(Icons.picture_as_pdf, color: Colors.red),
             const SizedBox(width: 12),
             Expanded(
               child: Text(

@@ -158,11 +158,14 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         
   children: [
-    ClipRRect(
-      
+    Container(
+      padding: EdgeInsets.all(20),
+       child: ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: Image.asset('assets/bg.jpg', ),
     ),
+    ),
+   
 
     Transform.translate(
       offset: Offset(0, -50),
@@ -173,9 +176,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     ),
-
+      
     Text('Anti-Red Tape Authority (ARTA)',
-    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, height: -2),
     )
   ],
 )
