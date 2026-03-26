@@ -28,13 +28,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 225, 221, 221),
+      backgroundColor: const Color.fromARGB(255, 61, 146, 95),
       appBar: AppBar(
         title: Row(
           children: [
-            CircleAvatar(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    color: Colors.green,
+                    width: 2.0,
+
+                  )
+
+              ),
+            child: CircleAvatar(
               radius: 18,
               backgroundImage: NetworkImage(logoUrl),
+            ),
             ),
             const SizedBox(width: 12),
              Expanded(
@@ -196,7 +207,7 @@ class _HomePageState extends State<HomePage> {
     ),
 
       
-    Text('Anti-Red Tape Authority (ARTA)',
+    Text("Citizen's Charter",
     style: GoogleFonts.inter(
     fontSize: 27,
     color: Color.fromARGB(255, 0, 128, 0),
@@ -246,7 +257,7 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Colors.green.shade300),
       ),
       child: DropdownButton<String>(
         value: _dropdownValues[index],
@@ -326,7 +337,7 @@ class _HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
           color: Colors.grey.shade50,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey.shade300),
+          border: Border.all(color: Colors.green.shade300),
         ),
         child: Row(
           children: [
