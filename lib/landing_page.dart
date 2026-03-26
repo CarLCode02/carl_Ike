@@ -95,8 +95,27 @@ class LandingPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () => Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (_) => const HomePage())),
+                   onPressed: () {
+                     Navigator.pushReplacement(
+                       context,
+                       PageRouteBuilder(
+                         pageBuilder: (context, animation, secondaryAnimation) => const HomePage(),
+                         transitionDuration: const Duration(milliseconds: 500),
+                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                           const begin = Offset(1.0, 0.0); // from right
+                           const end = Offset.zero;
+                   
+                           final tween = Tween(begin: begin, end: end)
+                               .chain(CurveTween(curve: Curves.easeInOut));
+                   
+                           return SlideTransition(
+                             position: animation.drive(tween),
+                             child: child,
+                           );
+                         },
+                       ),
+                     );
+                   },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

@@ -110,7 +110,7 @@ class _HospitalOperationsSupportViewState
     }else{
       baseList = widget.externalButtonNames ?? 
           const [
-        'Access to Closed–Circuit Television Image/Footage',
+        'Access to Closed Circuit Television Image/Footage',
         'Acceptance of Job Application',
         'Issuance of Official Receipt',
       'PhilHealth Registration and Status Updating',
