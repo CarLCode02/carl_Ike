@@ -33,14 +33,14 @@ class _FeedbackComplaintsViewState extends State<FeedbackComplaintsView> {
           const Padding(
             padding: EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Text(
-              'Services',
+              'Feedback and Complaints Mechanism',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'Category: Feedback and Complaints Mechanism',
+              'Service',
               style: TextStyle(fontSize: 13, color: Colors.grey),
             ),
           ),

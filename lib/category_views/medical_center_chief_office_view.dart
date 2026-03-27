@@ -1,8 +1,7 @@
-// toolboxes needed for ui, asset loading, and pdf viewing
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
-
+import '../all_services.dart';
 // screen for the Medical Center Chief Office category
 class MedicalCenterChiefOfficeView extends StatefulWidget {
   // label shown at the top of the list
@@ -30,6 +29,8 @@ class _MedicalCenterChiefOfficeViewState
 
   // stores what the user types in the search bar
   String _searchQuery = '';
+    String? _directPdfPath; // amo di
+  String? _directPdfTitle;
 
   // string path of assets declared
   static const String _chiefOfficePdf1 = 'assets/BRGHGMC/MCCO/External/medical.pdf';
@@ -42,48 +43,121 @@ class _MedicalCenterChiefOfficeViewState
     final type = widget.serviceType ?? 'External Services';
     return widget.buttonNames ??
         const [
-          'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unitf',
+          'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unit',
           
         ];
   }
 
   @override
   Widget build(BuildContext context) {
-    // if no button tapped yet, show the list of buttons
-    if (opened == null) {
+     if (_directPdfPath != null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // search bar at the top
-          _searchHeader(),
-          // shows the service type label
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-            child: Text(
-              widget.serviceType ?? 'External Services',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          // amo di - back button to return to the list
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+              color: Color.fromARGB(255, 240, 248, 255),
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  // amo di - clears direct pdf, goes back to list
+                  onPressed: () => setState(() {
+                    _directPdfPath = null; // amo di
+                    _directPdfTitle = null; // amo di
+                  }),
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    _directPdfTitle ?? '',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
           ),
-          // category label
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Category: Medical Center Chief Office',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
-            ),
-          ),
-          const SizedBox(height: 8),
-          // calling of the declared buttons in string list by index
-          // filters the list based on what the user typed in the search bar
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              children: services.
-                  where((t) => t.toLowerCase().contains(_searchQuery.toLowerCase()))
-                  .map((t) => _serviceButton(title: t))
-                  .toList(),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: _pdfPreview(assetPath: _directPdfPath!),
             ),
           ),
+        ],
+      );
+    }
+
+    if (opened == null) {
+      // amo di - filter all msd services (external + internal) based on search query
+      // amo nadi - now searches ALL services across all categories, not just MSD
+      final searchResults = _searchQuery.isEmpty
+          ? <Map<String, String>>[]
+          : allServices.where((s) => s['name']!.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _searchHeader(),
+          // amo di - if user typed something, show search results across all services
+          if (_searchQuery.isNotEmpty)
+            Expanded(
+              child: searchResults.isEmpty
+                  ? const Center(child: Text('No services found.', style: TextStyle(color: Colors.grey)))
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      itemCount: searchResults.length,
+                      itemBuilder: (context, index) {
+                        final service = searchResults[index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            leading: const Icon(Icons.picture_as_pdf, color: Colors.red),
+                            title: Text(service['name']!, style: const TextStyle(fontSize: 13)),
+                            // amo nadi - shows which category and service type it belongs to
+                            subtitle: Text('${service['category']} • ${service['serviceType']}', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                            trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+                            // amo di - tapping opens the pdf directly
+                            onTap: () => setState(() {
+                              _directPdfPath = service['pdf']; // amo di
+                              _directPdfTitle = service['name']; // amo di
+                              _searchQuery = '';
+                            }),
+                          ),
+                        );
+                      },                    
+                      ),
+            ),
+
+          // show normal list when nothing is typed
+          if (_searchQuery.isEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 2),
+              child: const Text(
+                'Medical Center Chief Office',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                widget.serviceType ?? 'External Services',
+                style: const TextStyle(fontSize: 13, color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                children: services.map((t) => _serviceButton(title: t)).toList(),
+              ),
+            ),
+          ],
         ],
       );
     }
@@ -187,17 +261,13 @@ class _MedicalCenterChiefOfficeViewState
           const Icon(Icons.search, color: Colors.grey),
           const SizedBox(width: 8),
           Expanded(
-            child: TextField(
+           child: TextField(
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Search services...',
+                hintText: 'Search all services...', // amo di
               ),
-              // saves what the user types and rebuilds the list
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
+              // amo di - saves what user types and rebuilds results
+              onChanged: (value) => setState(() => _searchQuery = value),
             ),
           ),
         ],
