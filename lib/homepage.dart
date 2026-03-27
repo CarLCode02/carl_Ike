@@ -17,7 +17,7 @@ const String logoUrl =
 // all services with their pdf paths, category, and service type
 const List<Map<String, String>> _allServices = [
   // MCCO External
-  {'name': 'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unitf',
+  {'name': 'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unit',
    'category': 'chief', 
    'serviceType': 'External Services', 
    'pdf': 'assets/BRGHGMC/MCCO/External/medical.pdf'
