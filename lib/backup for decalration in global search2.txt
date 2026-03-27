@@ -1,0 +1,198 @@
+  //Hospital Internal
+  {'name': 'Corrective Maintenance of Information and Communication Technology (ICT) Equipment',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Corrective Maintenance of Information and Communication Technology (ICT) Equipment.pdf'
+     },
+
+     {'name': 'Internal/Fabrication of Linen',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Fabrication of Linen.pdf'
+     },
+
+       {'name': 'Issuance of Clean Linen',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Issuance of Clean Linen.pdf'
+     },
+
+     {'name': 'Leave of Absence Application',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Leave of Absence Application.pdf'
+     },
+
+
+     {'name': 'Payment of Infrastructure Projects Billing',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Payment of Infrastructure Projects Billing.pdf'
+     },
+
+     {'name': 'Preparation of Payroll for Non-Permanent Employees',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Preparation of Payroll for Non-Permanent Employees.pdf'
+     },
+
+     {'name': 'Processing of Obligation Request and Status (ORS)_Budget Utilization Request and Status(BURS)',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Obligation Request and Status (ORS)_Budget Utilization Request and Status(BURS).pdf'
+     },
+
+     {'name': 'Processing of Payrolls',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Payrolls.pdf'
+     },
+
+     {'name': 'Processing of Purchase Orders (Bidding)',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Purchase Orders (Bidding).pdf'
+     },
+
+
+     {'name': 'Processing of Purchase Orders (Simple Value Procurement)',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Purchase Orders (Simple Value Procurement).pdf'
+     },
+
+     {'name': 'Processing of Request for Documents_Records of Employees',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Request for Documents_Records of Employees.pdf'
+     },
+
+     {'name': 'Processing of Service Request per Project_Activity in the Carpentry Section',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Carpentry Section.pdf'
+     },
+
+     {'name': 'Processing of Service Request per Project_Activity in the Electrical Section',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Electrical Section.pdf'
+     },
+
+     {'name': 'Processing of Service Request per Project_Activity in the Medical Equipment Maintenance Unit',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Medical Equipment Maintenance Unit.pdf'
+     },
+
+     {'name': 'Processing of Service Request per Project_Activity in the Plumbing Section',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Plumbing Section.pdf'
+     },
+
+     {'name': 'Releasing of Cash Benefits',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Releasing of Cash Benefits.pdf'
+     },
+
+     {'name': 'Replacement of Identification Card.',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Replacement of Identification Card..pdf'
+     },
+
+     {'name': 'Request for Motor Vehicle for Emergency Referral',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Request for Motor Vehicle for Emergency Referral.pdf'
+     },
+     {'name': '/Request of Motor Vehicle for Official Business',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal//Request of Motor Vehicle for Official Business.pdf'
+     },
+     {'name': 'Requisition and Issuance of Supplies, Materials and Equipment',
+   'category': 'ops',
+    'serviceType': 'Internal Services',
+     'pdf': 'assets/BRGHGMC/Host/Internal/Requisition and Issuance of Supplies, Materials and Equipment.pdf'
+     },
+
+     // External Service Hospiatal
+     {'name': 'Acceptance of Job Application',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Acceptance of Job Application.pdf'
+     },
+          {'name': 'Access to Closed Circuit Television Image_Footage',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Access to Closed Circuit Television Image_Footage.pdf'
+     },
+          {'name': 'Issuance of Official Receipt',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Issuance of Official Receipt.pdf'
+     },
+          {'name': 'PhilHealth Registration and Status Updating',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/PhilHealth Registration and Status Updating.pdf'
+     },
+          {'name': 'PhilHealth Status Verification',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/PhilHealth Status Verification.pdf'
+     },
+          {'name': 'Preparation of Order of Payment',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Preparation of Order of Payment.pdf'
+     },
+          {'name': 'Processing of Disbursement Vouchers',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Processing of Disbursement Vouchers.pdf'
+     },
+          {'name': 'Processing of In-Patient PhilHealth Claims',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Processing of In-Patient PhilHealth Claims.pdf'
+     },
+          {'name': 'Processing of Out-Patient PhilHealth Claims',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Processing of Out-Patient PhilHealth Claims.pdf'
+     },
+          {'name': 'Procurement Procedure for Alternative Mode of Procurement',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/PPA.pdf'
+     },
+          {'name': 'Procurement Procedure Through Competitive Bidding',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Procurement Procedure Through Competitive Bidding.pdf'
+     },
+          {'name': 'Purchasing of Bidding Documents Through Manual Payment',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Manual Payment.pdf'
+     },
+          {'name': 'Purchasing of Bidding Documents Through Online Payment',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Online Payment.pdf'
+     },
+          {'name': 'Receiving of Deliveries, Supplies, Materials and Equipment',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Receiving of Deliveries, Supplies, Materials and Equipment.pdf'
+     },
+          {'name': 'Releasing of Checks',
+   'category': 'ops',
+    'serviceType': 'External Services',
+     'pdf': 'assets/BRGHGMC/Host/External/Releasing of Checks.pdf'
+     },
+          

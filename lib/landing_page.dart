@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'homepage.dart';
 
@@ -95,8 +96,28 @@ class LandingPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () => Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (_) => const HomePage())),
+                    onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const HomePage(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeInOut;
+
+                  final tween = Tween(begin: begin, end: end)
+                  .chain(CurveTween(curve: curve));
+
+             return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+                );
+                 },
+                transitionDuration: const Duration(milliseconds: 700),
+                 ),
+                 );
+                  },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
