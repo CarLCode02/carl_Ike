@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'allied_service_division_view.dart';
+import 'list_of_offices_view.dart';
+import 'medical_service_division_view.dart';
+import 'nursing_service_division_view.dart';
+import 'allied_service_division_view.dart';
+
 
 class HospitalOperationsSupportView extends StatefulWidget {
   final String? serviceType;
@@ -110,7 +116,7 @@ class _HospitalOperationsSupportViewState
     }else{
       baseList = widget.externalButtonNames ?? 
           const [
-        'Access to Closed–Circuit Television Image/Footage',
+        'Access to Closed Circuit Television Image/Footage',
         'Acceptance of Job Application',
         'Issuance of Official Receipt',
       'PhilHealth Registration and Status Updating',
@@ -143,18 +149,18 @@ class _HospitalOperationsSupportViewState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _searchHeader(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Text(
-              widget.serviceType ?? 'External Services',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              'Hospital Operations and Patient Support Service Division',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'Category: Hospital Operations and Patient Support Service Division',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
+              '${widget.serviceType ?? 'External Services'}',
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
             ),
           ),
           const SizedBox(height: 8),
