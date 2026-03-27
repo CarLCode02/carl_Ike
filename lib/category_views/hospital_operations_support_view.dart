@@ -204,7 +204,6 @@ class _HospitalOperationsSupportViewState
       ],
     );
   }
-
   Widget _pdfPreview({required String assetPath}) {
     return FutureBuilder<void>(
       future: rootBundle.load(assetPath).then((_) {}),
