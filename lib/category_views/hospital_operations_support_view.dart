@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
-import 'allied_service_division_view.dart';
+import 'dart:async'; 
+
+
+/* import 'allied_service_division_view.dart';
 import 'list_of_offices_view.dart';
 import 'medical_service_division_view.dart';
 import 'nursing_service_division_view.dart';
-import 'allied_service_division_view.dart';
+import 'allied_service_division_view.dart'; */
 
 
 class HospitalOperationsSupportView extends StatefulWidget {
@@ -30,6 +33,11 @@ class _HospitalOperationsSupportViewState
   String? opened;
 
   String searchQuery = "";
+
+
+  //timer for screen inactivty
+  Timer? _inactivityTimer; 
+  final Duration _timeoutDuration = Duration(minutes: 1);   
 
   // Map each service to its PDF file
   late Map<String, String> servicePdfMap;
@@ -64,7 +72,7 @@ class _HospitalOperationsSupportViewState
       'Request for Motor Vehicle for Emergency Referral': 'assets/BRGHGMC/Host/Internal/Request for Motor Vehicle for Emergency Referral.pdf',
       'Request of Motor Vehicle for Official Business': 'assets/BRGHGMC/Host/Internal/Request of Motor Vehicle for Official Business.pdf',
       
-      
+
       // External Services
       'Access to Closed Circuit Television Image/Footage': 'assets/BRGHGMC/Host/External/Access to Closed Circuit Television Image_Footage.pdf',
       'Acceptance of Job Application': 'assets/BRGHGMC/Host/External/Acceptance of Job Application.pdf',
@@ -111,9 +119,16 @@ class _HospitalOperationsSupportViewState
       'Peritoneal Dialysis Exit Site Care and Change of Extension Catheter': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Exit Site Care and Change of Extension Catheter.pdf',
       'Peritoneal Dialysis Patients Registration and Consultation': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Patients Registration and Consultation.pdf',
       'Peritoneal Dialysis Z Benefit Claim for Enrolled OPD-PD Patients': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Z Benefit Claim for Enrolled OPD-PD Patients.pdf',
+
       
       //-------MCCO EXTERNAL---------
       'Handling Resolution of Complaints filed with the PACD, 8888, PCC, and CCB and direct filing with the legal unit': 'assets/BRGHGMC/MCCO/External/medical.pdf',
+
+      //-------one pdf only
+      'Internal Medical Service': 'assets/pdfs/InternalMedicalService.pdf',
+      'List of Offices': 'assets/pdfs/ListOffice.pdf',
+      'Mechanism': 'assets/pdfs/Mechanism.pdf',
+
 
       //-------MSD EXTERNAL---------
       'Dental Consultation and Treatment': 'assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf',
