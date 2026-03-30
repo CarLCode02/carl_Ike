@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
 import '../all_services.dart'; // amo nadi - import shared services list
+import 'dart:async';
+import 'package:flutter11th/landing_page.dart';
 
 class AlliedServiceDivisionView extends StatefulWidget {
   final String? serviceType;
@@ -23,6 +25,7 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
   String _searchQuery = '';
     String? _directPdfPath; // amo di
   String? _directPdfTitle; // amo di
+      Timer? _inactivityTimer;
 
   // string path of assets declared
   static const String _pdf1  = 'assets/BRGHGMC/ASD/External/Classification of Admitted Patients (MSS Inpatient).pdf';
@@ -59,9 +62,50 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
         ];
   }
 
+    void _startInactivityTimer() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    _inactivityTimer = Timer(const Duration(minutes: 1), _returnToLanding); // amo nadi screen timeout
+  }
+
+
+    
+  void _resetInactivityTimer() {
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  void _returnToLanding() {
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LandingPage()), // amo nadi screen timeout
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  @override
+  void dispose() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (_directPdfPath != null) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent, // amo nadi screen timeout
+      onTap: _resetInactivityTimer, // amo nadi screen timeout
+      onPanDown: (_) => _resetInactivityTimer(), // amo nadi screen timeout
+      child: _buildContent(context),
+    );
+  }
+
+    Widget _buildContent(BuildContext context) {
+     if (_directPdfPath != null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -150,7 +194,7 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 2),
               child: const Text(
-                'Allied Service Division',
+                'Medical Center Chief Office',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
               ),
             ),

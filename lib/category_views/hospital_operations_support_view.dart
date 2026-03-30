@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'dart:async'; 
+import 'package:flutter11th/landing_page.dart';
 
 
 /* import 'allied_service_division_view.dart';
@@ -37,16 +38,10 @@ class _HospitalOperationsSupportViewState
 
   //timer for screen inactivty
   Timer? _inactivityTimer; 
-  final Duration _timeoutDuration = Duration(minutes: 1);   
 
   // Map each service to its PDF file
   late Map<String, String> servicePdfMap;
 
-  @override
-  void initState() {
-    super.initState();
-    servicePdfMap = _buildServicePdfMap();
-  }
 
   Map<String, String> _buildServicePdfMap() {
     return {
@@ -210,6 +205,8 @@ class _HospitalOperationsSupportViewState
       'Releasing of Checks',
     ];
   }
+
+
   if(searchQuery.isEmpty) return baseList; 
   // Search across all available services (including hidden ones) for matching results
   return servicePdfMap.keys
@@ -217,8 +214,52 @@ class _HospitalOperationsSupportViewState
      service.toLowerCase().contains(searchQuery))
      .toList();
 }
+
+   void _startInactivityTimer() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    _inactivityTimer = Timer(const Duration(minutes: 1), _returnToLanding); // amo nadi screen timeout
+  }
+
+
+    
+  void _resetInactivityTimer() {
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  void _returnToLanding() {
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LandingPage()), // amo nadi screen timeout
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startInactivityTimer(); // amo nadi screen timeout
+        servicePdfMap = _buildServicePdfMap();
+  }
+
+  @override
+  void dispose() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent, // amo nadi screen timeout
+      onTap: _resetInactivityTimer, // amo nadi screen timeout
+      onPanDown: (_) => _resetInactivityTimer(), // amo nadi screen timeout
+      child: _buildContent(context),
+    );
+  }
+
+  
+  Widget _buildContent(BuildContext context) {
     if (opened == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,

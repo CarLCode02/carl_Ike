@@ -5,14 +5,28 @@ import 'homepage.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
+
+    final orientation = MediaQuery.of(context).orientation;
+    final String backgroundImage;
+
+    if (orientation == Orientation.portrait) {
+      backgroundImage = 'assets/1.JPG';
+    } else {
+      backgroundImage = 'assets/bg.jpg';
+    }
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/bg.jpg', fit: BoxFit.cover),
+          Container(
+            decoration: BoxDecoration(
+            ),
+          child: Image.asset(backgroundImage, fit: BoxFit.cover),
+          ),
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(

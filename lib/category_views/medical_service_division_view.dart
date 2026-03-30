@@ -68,7 +68,7 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
 
     void _startInactivityTimer() {
     _inactivityTimer?.cancel(); // amo nadi screen timeout
-    _inactivityTimer = Timer(const Duration(seconds: 20), _returnToLanding); // amo nadi screen timeout
+    _inactivityTimer = Timer(const Duration(minutes: 1), _returnToLanding); // amo nadi screen timeout
   }
 
 

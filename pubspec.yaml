@@ -72,6 +72,7 @@ flutter:
     - assets/pdfs/ListOffice.pdf
     - assets/pdfs/Mechanism.pdf
     - assets/bg.jpg
+    - assets/1.JPG
 
     # MCCO External
     - assets/BRGHGMC/MCCO/External/medical.pdf

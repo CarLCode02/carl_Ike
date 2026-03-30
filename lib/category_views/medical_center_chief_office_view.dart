@@ -54,7 +54,7 @@ class _MedicalCenterChiefOfficeViewState
 
   void _startInactivityTimer() {
     _inactivityTimer?.cancel(); // amo nadi screen timeout
-    _inactivityTimer = Timer(const Duration(minutes: 5), _returnToLanding); // amo nadi screen timeout
+    _inactivityTimer = Timer(const Duration(seconds: 20), _returnToLanding); // amo nadi screen timeout
   }
 
   void _resetInactivityTimer() {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'dart:async';
+import 'package:flutter11th/landing_page.dart';
 
 class ListOfOfficesView extends StatefulWidget {
   final List<String>? buttonNames;
@@ -12,6 +14,7 @@ class ListOfOfficesView extends StatefulWidget {
 
 class _ListOfOfficesViewState extends State<ListOfOfficesView> {
   String? opened;
+   Timer? _inactivityTimer;
 
   static const String _pdf1 = 'assets/pdfs/ListOffice.pdf';
 
@@ -23,8 +26,50 @@ class _ListOfOfficesViewState extends State<ListOfOfficesView> {
     ];
   }
 
+       void _startInactivityTimer() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    _inactivityTimer = Timer(const Duration(minutes: 1), _returnToLanding); // amo nadi screen timeout
+  }
+
+
+    
+  void _resetInactivityTimer() {
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  void _returnToLanding() {
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LandingPage()), // amo nadi screen timeout
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  @override
+  void dispose() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent, // amo nadi screen timeout
+      onTap: _resetInactivityTimer, // amo nadi screen timeout
+      onPanDown: (_) => _resetInactivityTimer(), // amo nadi screen timeout
+      child: _buildContent(context),
+    );
+  }
+
+  @override
+  Widget _buildContent(BuildContext context) {
     if (opened == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
