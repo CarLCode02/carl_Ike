@@ -33,14 +33,14 @@ class _ListOfOfficesViewState extends State<ListOfOfficesView> {
           const Padding(
             padding: EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Text(
-              'Services',
+              'List of Offices',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'Category: List of Offices',
+              'Service',
               style: TextStyle(fontSize: 13, color: Colors.grey),
             ),
           ),
