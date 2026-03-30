@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
+import '../all_services.dart'; // amo nadi - import shared services list
 
 class MedicalServiceDivisionView extends StatefulWidget {
   final String? serviceType;
@@ -21,22 +22,24 @@ class MedicalServiceDivisionView extends StatefulWidget {
 class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView> {
   String? opened;
 
-    // stores what the user types in the search bar
+  // stores what the user types in the search bar
   String _searchQuery = '';
 
+  // amo di - when not null, directly opens this pdf skipping the list
+  String? _directPdfPath; // amo di
+  String? _directPdfTitle; // amo di
 
   static const String _pdf1 = 'assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf';
   static const String _pdf2 = 'assets/BRGHGMC/MSD/External/Outpatient Physical Therapy Treatment.pdf';
-    static const String _pdf3 = 'assets/BRGHGMC/MSD/External/ABPM.pdf';
-      static const String _pdf4 = 'assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf';
+  static const String _pdf3 = 'assets/BRGHGMC/MSD/External/ABPM.pdf';
+  static const String _pdf4 = 'assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf';
   static const String _pdf5 = 'assets/BRGHGMC/MSD/External/Processing of Request for Two-Dimensional Echocardiography with Doppler Studies.pdf';
-    static const String _pdf6 = 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf';
+  static const String _pdf6 = 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf';
   static const String _pdf7 = 'assets/BRGHGMC/MSD/External/outp.pdf';
   static const String _pdf8 = 'assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf';
   static const String _pdf9 = 'assets/BRGHGMC/MSD/Internal/Special Function Meal Request.pdf';
-  
 
-// lsit of button in string declaration
+// list of button in string declaration
   List<String> get services {
     final type = widget.serviceType ?? 'External Services';
     if (type == 'Internal Services') {
@@ -61,35 +64,115 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
 
   @override
   Widget build(BuildContext context) {
+    // amo di - if a search result was tapped, show the pdf directly
+    if (_directPdfPath != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // amo di - back button to return to the list
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+              color: Color.fromARGB(255, 240, 248, 255),
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  // amo di - clears direct pdf, goes back to list
+                  onPressed: () => setState(() {
+                    _directPdfPath = null; // amo di
+                    _directPdfTitle = null; // amo di
+                  }),
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    _directPdfTitle ?? '',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: _pdfPreview(assetPath: _directPdfPath!),
+            ),
+          ),
+        ],
+      );
+    }
+
     if (opened == null) {
+      // amo di - filter all msd services (external + internal) based on search query
+      // amo nadi - now searches ALL services across all categories, not just MSD
+      final searchResults = _searchQuery.isEmpty
+          ? <Map<String, String>>[]
+          : allServices.where((s) => s['name']!.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _searchHeader(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-            child: Text(
-              widget.serviceType ?? 'External Services',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          // amo di - if user typed something, show search results across all services
+          if (_searchQuery.isNotEmpty)
+            Expanded(
+              child: searchResults.isEmpty
+                  ? const Center(child: Text('No services found.', style: TextStyle(color: Colors.grey)))
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      itemCount: searchResults.length,
+                      itemBuilder: (context, index) {
+                        final service = searchResults[index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            leading: const Icon(Icons.picture_as_pdf, color: Colors.red),
+                            title: Text(service['name']!, style: const TextStyle(fontSize: 13)),
+                            // amo nadi - shows which category and service type it belongs to
+                            subtitle: Text('${service['category']} • ${service['serviceType']}', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                            trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+                            // amo di - tapping opens the pdf directly
+                            onTap: () => setState(() {
+                              _directPdfPath = service['pdf']; // amo di
+                              _directPdfTitle = service['name']; // amo di
+                              _searchQuery = '';
+                            }),
+                          ),
+                        );
+                      },                    
+                      ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Category: Medical Service Division',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
+
+          // show normal list when nothing is typed
+          if (_searchQuery.isEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 2),
+              child: const Text(
+                'Medical Service Division',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              children: services.
-              where((t) => t.toLowerCase().contains(_searchQuery.toLowerCase()))
-                  .map((t) => _serviceButton(title: t))
-                  .toList(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                widget.serviceType ?? 'External Services',
+                style: const TextStyle(fontSize: 13, color: Colors.grey),
+              ),
             ),
-          ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                children: services.map((t) => _serviceButton(title: t)).toList(),
+              ),
+            ),
+          ],
         ],
       );
     }
@@ -197,13 +280,10 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
             child: TextField(
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Search services...',
+                hintText: 'Search all services...', // amo di
               ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
+              // amo di - saves what user types and rebuilds results
+              onChanged: (value) => setState(() => _searchQuery = value),
             ),
           ),
         ],
