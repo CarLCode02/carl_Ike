@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
 import '../all_services.dart'; // amo nadi - import shared services list
+import 'dart:async';
+import 'package:flutter11th/landing_page.dart';
 
 class MedicalServiceDivisionView extends StatefulWidget {
   final String? serviceType;
@@ -25,9 +27,11 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
   // stores what the user types in the search bar
   String _searchQuery = '';
 
-  // amo di - when not null, directly opens this pdf skipping the list
   String? _directPdfPath; // amo di
   String? _directPdfTitle; // amo di
+
+  Timer? _inactivityTimer;
+   
 
   static const String _pdf1 = 'assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf';
   static const String _pdf2 = 'assets/BRGHGMC/MSD/External/Outpatient Physical Therapy Treatment.pdf';
@@ -62,10 +66,50 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
     ];
   }
 
+    void _startInactivityTimer() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    _inactivityTimer = Timer(const Duration(seconds: 20), _returnToLanding); // amo nadi screen timeout
+  }
+
+
+    
+  void _resetInactivityTimer() {
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  void _returnToLanding() {
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LandingPage()), // amo nadi screen timeout
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  @override
+  void dispose() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // amo di - if a search result was tapped, show the pdf directly
-    if (_directPdfPath != null) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent, // amo nadi screen timeout
+      onTap: _resetInactivityTimer, // amo nadi screen timeout
+      onPanDown: (_) => _resetInactivityTimer(), // amo nadi screen timeout
+      child: _buildContent(context),
+    );
+  }
+
+    Widget _buildContent(BuildContext context) {
+     if (_directPdfPath != null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -154,7 +198,7 @@ class _MedicalServiceDivisionViewState extends State<MedicalServiceDivisionView>
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 2),
               child: const Text(
-                'Medical Service Division',
+                'Medical Center Chief Office',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
               ),
             ),
