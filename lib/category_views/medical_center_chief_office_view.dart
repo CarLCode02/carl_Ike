@@ -1,7 +1,9 @@
+import 'dart:async'; // amo nadi screen timeout
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
 import '../all_services.dart';
+import '../landing_page.dart'; // amo nadi screen timeout
 // screen for the Medical Center Chief Office category
 class MedicalCenterChiefOfficeView extends StatefulWidget {
   // label shown at the top of the list
@@ -29,8 +31,10 @@ class _MedicalCenterChiefOfficeViewState
 
   // stores what the user types in the search bar
   String _searchQuery = '';
-    String? _directPdfPath; // amo di
+  String? _directPdfPath; // amo di
   String? _directPdfTitle;
+
+  Timer? _inactivityTimer;
 
   // string path of assets declared
   static const String _chiefOfficePdf1 = 'assets/BRGHGMC/MCCO/External/medical.pdf';
@@ -48,8 +52,47 @@ class _MedicalCenterChiefOfficeViewState
         ];
   }
 
+  void _startInactivityTimer() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    _inactivityTimer = Timer(const Duration(minutes: 5), _returnToLanding); // amo nadi screen timeout
+  }
+
+  void _resetInactivityTimer() {
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  void _returnToLanding() {
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LandingPage()), // amo nadi screen timeout
+        (route) => false,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startInactivityTimer(); // amo nadi screen timeout
+  }
+
+  @override
+  void dispose() {
+    _inactivityTimer?.cancel(); // amo nadi screen timeout
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent, // amo nadi screen timeout
+      onTap: _resetInactivityTimer, // amo nadi screen timeout
+      onPanDown: (_) => _resetInactivityTimer(), // amo nadi screen timeout
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
      if (_directPdfPath != null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
