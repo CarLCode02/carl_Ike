@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
-import 'allied_service_division_view.dart';
+import 'dart:async'; 
+
+
+/* import 'allied_service_division_view.dart';
 import 'list_of_offices_view.dart';
 import 'medical_service_division_view.dart';
 import 'nursing_service_division_view.dart';
-import 'allied_service_division_view.dart';
+import 'allied_service_division_view.dart'; */
 
 
 class HospitalOperationsSupportView extends StatefulWidget {
@@ -30,6 +33,11 @@ class _HospitalOperationsSupportViewState
   String? opened;
 
   String searchQuery = "";
+
+
+  //timer for screen inactivty
+  Timer? _inactivityTimer; 
+  final Duration _timeoutDuration = Duration(minutes: 1);   
 
   // Map each service to its PDF file
   late Map<String, String> servicePdfMap;
@@ -64,6 +72,7 @@ class _HospitalOperationsSupportViewState
       'Request for Motor Vehicle for Emergency Referral': 'assets/BRGHGMC/Host/Internal/Request for Motor Vehicle for Emergency Referral.pdf',
       'Request of Motor Vehicle for Official Business': 'assets/BRGHGMC/Host/Internal/Request of Motor Vehicle for Official Business.pdf',
       
+
       // External Services
       'Access to Closed Circuit Television Image/Footage': 'assets/BRGHGMC/Host/External/Access to Closed Circuit Television Image_Footage.pdf',
       'Acceptance of Job Application': 'assets/BRGHGMC/Host/External/Acceptance of Job Application.pdf',
@@ -81,6 +90,73 @@ class _HospitalOperationsSupportViewState
       'Purchasing of Bidding Documents Through Online Payment': 'assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Online Payment.pdf',
       'Receiving of Deliveries, Supplies, Materials and Equipme': 'assets/BRGHGMC/Host/External/Receiving of Deliveries, Supplies, Materials and Equipment.pdf',
       'Releasing of Checks': 'assets/BRGHGMC/Host/External/Releasing of Checks.pdf',
+
+      //hidden category from different views
+      //-------NSD INTERNAL SERVICES-------
+      'Management of Patient for Surgery': 'assets/BRGHGMC/NSD/Internal/Management of Patient for Surgery.pdf',
+      'Admission and Discharge': 'assets/BRGHGMC/NSD/Internal/Admission and Discharge.pdf',
+      'Dispensing of Medical Supplies in Clinical Areas and Sections of the Hospital': 'assets/BRGHGMC/NSD/Internal/Dispensing of Medical Supplies in Clinical Areas and Sections of the Hospital.pdf',
+      'Sterilization of Medical Supplies and Surgical Instruments': 'assets/BRGHGMC/NSD/Internal/Sterilization of Medical Supplies and Surgical Instruments.pdf',
+
+      //-------NSD EXTERNAL SERVICES-------
+      'Admission from Emergency Department to Clinical Wards': 'assets/BRGHGMC/NSD/External/Admission from Emergency Department to Clinical Wards.pdf',
+      'Admission of Patients to the Acute Care for the Elderly Unit': 'assets/BRGHGMC/NSD/External/Admission of Patients to the Acute Care for the Elderly Unit.pdf',
+      'Admission of Patients to the Clinical Nursing Units': 'assets/BRGHGMC/NSD/External/Admission of Patients to the Clinical Nursing Units.pdf',
+      'Admission of Patients to the Neonatal Intensive Care Unit': 'assets/BRGHGMC/NSD/External/Admission of Patients to the Neonatal Intensive Care Unit.pdf',
+      'Automated Peritoneal Dialysis Treatment to All PD Patient': 'assets/BRGHGMC/NSD/External/Automated Peritoneal Dialysis Treatment to All PD Patient.pdf',
+      'Discharge of Patients at the Clinical Nursing Units': 'assets/BRGHGMC/NSD/External/Discharge of Patients at the Clinical Nursing Units.pdf',
+      'Dispensing of Medical Supplies for Admitted Patients': 'assets/BRGHGMC/NSD/External/Dispensing of Medical Supplies for Admitted Patients.pdf',
+      'Dispensing of Medical Supplies for Out-Patients': 'assets/BRGHGMC/NSD/External/Dispensing of Medical Supplies for Out-Patients.pdf',
+      'Ears, Nose, Throat (ENT) Department Registration and Consultation': 'assets/BRGHGMC/NSD/External/Ears, Nose, Throat (ENT) Department Registration and Consultation.pdf',
+      'Geriatric OPD Patients': 'assets/BRGHGMC/NSD/External/Geriatric OPD Patients.pdf',
+      'Hemodialysis Treatment for Admitted and Enrolled Hemodialysis Patients': 'assets/BRGHGMC/NSD/External/Hemodialysis Treatment for Admitted and Enrolled Hemodialysis Patients.pdf',
+      'Human Immunodeficiency Virus (HIV) Counseling and Testing Services': 'assets/BRGHGMC/NSD/External/Human Immunodeficiency Virus (HIV) Counseling and Testing Services.pdf',
+      'Issuance of Hemodialysis Documents': 'assets/BRGHGMC/NSD/External/Issuance of Hemodialysis Documents.pdf',
+      'Management of Patient at the Emergency Department': 'assets/BRGHGMC/NSD/External/Management of Patient at the Emergency Department.pdf',
+      'National Tuberculosis Program (NTP) Integrated Delivery of TB Services': 'assets/BRGHGMC/NSD/External/National Tuberculosis Program (NTP) Integrated Delivery of TB Services.pdf',
+      'Ophthalmology Department Eye Surgery and Laser Procedure': 'assets/BRGHGMC/NSD/External/Ophthalmology Department Eye Surgery and Laser Procedure.pdf',
+      'Out-Patient Department Patients Registration and Consultation': 'assets/BRGHGMC/NSD/External/Out-Patient Department Patients Registration and Consultation.pdf',
+      'Peritoneal Dialysis Exit Site Care and Change of Extension Catheter': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Exit Site Care and Change of Extension Catheter.pdf',
+      'Peritoneal Dialysis Patients Registration and Consultation': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Patients Registration and Consultation.pdf',
+      'Peritoneal Dialysis Z Benefit Claim for Enrolled OPD-PD Patients': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Z Benefit Claim for Enrolled OPD-PD Patients.pdf',
+
+      
+      //-------MCCO EXTERNAL---------
+      'Handling Resolution of Complaints filed with the PACD, 8888, PCC, and CCB and direct filing with the legal unit': 'assets/BRGHGMC/MCCO/External/medical.pdf',
+
+      //-------one pdf only
+      'Internal Medical Service': 'assets/pdfs/InternalMedicalService.pdf',
+      'List of Offices': 'assets/pdfs/ListOffice.pdf',
+      'Mechanism': 'assets/pdfs/Mechanism.pdf',
+
+
+      //-------MSD EXTERNAL---------
+      'Dental Consultation and Treatment': 'assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf',
+      'Outpatient Physical Therapy Treatment': 'assets/BRGHGMC/MSD/External/Outpatient Physical Therapy Treatment.pdf',
+      'Processing of Request for 24-hour Ambulatory Blood Pressure Monitorin(APBM) and 24-hour Holter Examination': 'assets/BRGHGMC/MSD/External/APBM.pdf',
+      'Processing of Requests X-Ray, Ultrasound, and Computerized': 'assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf',
+      'Processing of Request for Two-Dimensional Echocardiography with Doppler Studies': 'assets/BRGHGMC/MSD/External/Processing of Request for Two-Dimensional Echocardiography with Doppler Studies.pdf',
+      'Provision of Laboratory Services for In-Patients': 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf',
+      'Provision of Laboratory Services for Out-Patients': 'assets/BRGHGMC/MSD/External/outp.pdf',
+      'Provision of Satellite Laboratory Servies': 'assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf',
+
+      //------MSD INTERNAL---------
+      'Special Function Meal Request': 'assets/BRGHGMC/MSD/External/Special Function Meal Request.pdf',
+
+      //------ASD EXTERNAL---------
+      'Classification of Admitted Patients (MSS Inpatient)': 'assets/BRGHGMC/ASD/External/Classification of Admitted Patients (MSS Inpatient).pdf',
+      'Dispensing of Drugs and Medicines for In-Patients': 'assets/BRGHGMC/ASD/External/Dispensing of Drugs and Medicines for In-Patients.pdf',
+      'Dispensing of Drugs and Medicines for Out-Patients': 'assets/BRGHGMC/ASD/External/Dispensing of Drugs and Medicines for Out-Patients.pdf',
+      'Enrollment to Point of Service Program': 'assets/BRGHGMC/ASD/External/Enrollment to Point of Service Program.pdf',
+      'Issuance of Death & Medical Certificate, Medical Abstract and Certificate of Confinement': 'assets/BRGHGMC/ASD/External/Issuance of Death & Medical Certificate, Medical Abstract and Certificate of Confinement.pdf',
+      'Issuance of Medical Certificate or Medical Abstract': 'assets/BRGHGMC/ASD/External/Issuance of Medical Certificate or Medical Abstract.pdf',
+      'Issuance of Registered Birth Certificate': 'assets/BRGHGMC/ASD/External/Issuance of Registered Birth Certificate.pdf',
+      'Medication Counseling for OPD Geriatric Patientspdf': 'assets/BRGHGMC/ASD/External/Medication Counseling for OPD Geriatric Patientspdf.pdf',
+      'Nutrition Care Process': 'assets/BRGHGMC/ASD/External/Nutrition Care Process.pdf',
+      'Patient Classification (Malasakit Center In–Patient)': 'assets/BRGHGMC/ASD/External/Patient Classification (Malasakit Center In–Patient).pdf',
+      'Patient Classification (Malasakit Center Out-Patient)': 'assets/BRGHGMC/ASD/External/Patient Classification (Malasakit Center Out-Patient).pdf',
+      'Patient Classification MSS - Emergency Room': 'assets/BRGHGMC/ASD/External/Patient Classification MSS - Emergency Room.pdf',
+      'Tube Feeding Instruction to Patients Watcher_Patient': 'assets/BRGHGMC/ASD/External/Tube Feeding Instruction to Patients Watcher_Patient.pdf',
     };
   }
 
@@ -135,12 +211,11 @@ class _HospitalOperationsSupportViewState
     ];
   }
   if(searchQuery.isEmpty) return baseList; 
-  return baseList
+  // Search across all available services (including hidden ones) for matching results
+  return servicePdfMap.keys
      .where((service)=>
      service.toLowerCase().contains(searchQuery))
-     .toList(
-
-     );
+     .toList();
 }
   @override
   Widget build(BuildContext context) {
@@ -204,7 +279,6 @@ class _HospitalOperationsSupportViewState
       ],
     );
   }
-
   Widget _pdfPreview({required String assetPath}) {
     return FutureBuilder<void>(
       future: rootBundle.load(assetPath).then((_) {}),
