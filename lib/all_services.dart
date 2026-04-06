@@ -1,4 +1,4 @@
-// amo nadi - shared list of all services across all categories
+ // amo di decalartion of pdf strings
 // used by both the homepage search and the medical service division search
 const List<Map<String, String>> allServices = [
 // MCCO External

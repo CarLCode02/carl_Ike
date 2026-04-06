@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   pdfrx: ^2.2.20
   google_fonts: ^8.0.2
+  dropdown_button2: ^2.3.9  # amo nadi - gives offset + rounded menu control
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,14 @@ flutter:
     - assets/pdfs/Mechanism.pdf
     - assets/bg.jpg
     - assets/1.JPG
+
+    # CC User Guide images
+    - assets/CC User Guide/1.png
+    - assets/CC User Guide/2.png
+    - assets/CC User Guide/3.png
+    - assets/CC User Guide/4.png
+    - assets/CC User Guide/5.png
+    - assets/CC User Guide/6.png
 
     # MCCO External
     - assets/BRGHGMC/MCCO/External/medical.pdf

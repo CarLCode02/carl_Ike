@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:dropdown_button2/dropdown_button2.dart'; // amo nadi - for offset + rounded dropdown menu
+import 'dart:async'; // amo nadi timer - needed for Timer
 
+import 'all_services.dart'; // amo di decalartion of pdf strings
 import 'category_views/allied_service_division_view.dart';
 import 'category_views/feedback_complaints_view.dart';
 import 'category_views/hospital_operations_support_view.dart';
@@ -10,468 +13,12 @@ import 'category_views/list_of_offices_view.dart';
 import 'category_views/medical_center_chief_office_view.dart';
 import 'category_views/medical_service_division_view.dart';
 import 'category_views/nursing_service_division_view.dart';
+import 'landing_page.dart'; // amo nadi timer - navigate back to landing on timeout
 
 const String logoUrl =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkIw4OWQiV_yA9bzadlniIC80ObGNLwx97bg&s';
 
-// all services with their pdf paths, category, and service type
-const List<Map<String, String>> _allServices = [
-  // MCCO External
-  {'name': 'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unit',
-   'category': 'chief', 
-   'serviceType': 'External Services', 
-   'pdf': 'assets/BRGHGMC/MCCO/External/medical.pdf'
-   },
-
-  // MSD External
-  {'name': 'Dental Consultation and Treatment',
-   'category': 'medical', 
-   'serviceType': 'External Services', 
-   'pdf': 'assets/BRGHGMC/MSD/External/Dental Consultation and Treatment.pdf'
-   },
-  {'name': 'Outpatient Physical Therapy Treatment', 
-  'category': 'medical', 
-  'serviceType': 'External Services',
-   'pdf': 'assets/BRGHGMC/MSD/External/Outpatient Physical Therapy Treatment.pdf'
-   },
-  {'name': 'Processing of Request for 24-hour Ambulatory Blood Pressure Monitoring(ABPM) and 24-hour Holter Examinations',
-   'category': 'medical', 
-   'serviceType': 'External Services',
-    'pdf': 'assets/BRGHGMC/MSD/External/ABPM.pdf'
-    },
-  {'name': 'Processing of Requests X-Ray, UItrasound, and Computerized Tompgraphy Scan',
-   'category': 'medical', 
-   'serviceType': 'External Services',
-    'pdf': 'assets/BRGHGMC/MSD/External/Processing of Requests X-Ray, Ultrasound, and Computerized.pdf'
-    },
-  {'name': 'Processing of Request for Two-Dimensional Echocardiography with Doppler Studies',
-   'category': 'medical',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/MSD/External/Processing of Request for Two-Dimensional Echocardiography with Doppler Studies.pdf'
-     },
-  {'name': 'Provision of Laboratory Services for In-Patients',
-   'category': 'medical', 
-   'serviceType': 'External Services',
-    'pdf': 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for In-Patients.pdf'
-    },
-  {'name': 'Provision of Laboratory Services for Out-Patients',
-   'category': 'medical', 
-   'serviceType': 'External Services', 
-   'pdf': 'assets/BRGHGMC/MSD/External/Provision of Laboratory Services for Out-Patients.pdf'
-   },
-  {'name': 'Provision of Satellite Laboratory Servies', 
-  'category': 'medical',
-   'serviceType': 'External Services',
-    'pdf': 'assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf'
-    },
-  // MSD Internal
-  {'name': 'Special Function Meal Request',
-   'category': 'medical', 
-   'serviceType': 'Internal Services',
-    'pdf': 'assets/BRGHGMC/MSD/Internal/Special Function Meal Request.pdf'
-    },
-
-  // NSD External
-  {'name': 'Admission from Emergency Department to Clinical Wards',
-   'category': 'nursing', 
-   'serviceType': 'External Services', 
-   'pdf': 'assets/BRGHGMC/NSD/External/Admission from Emergency Department to Clinical Wards.pdf'
-   },
-  {'name': 'Admission of Patients to the Acute Care for the Elderly Unit',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Admission of Patients to the Acute Care for the Elderly Unit.pdf'
-     },
-  {'name': 'Admission of Patients to the Clinical Nursing Units',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Admission of Patients to the Clinical Nursing Units.pdf'
-     },
-  {'name': 'Admission of Patients to the Neonatal Intensive Care Unit',
-   'category': 'nursing', 
-   'serviceType': 'External Services'
-   , 'pdf': 'assets/BRGHGMC/NSD/External/Admission of Patients to the Neonatal Intensive Care Unit.pdf'
-   },
-  {'name': 'Automated Peritoneal Dialysis Treatment to All PD Patient',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Automated Peritoneal Dialysis Treatment to All PD Patient.pdf'
-     },
-  {'name': 'Discharge of Patients at the Clinical Nursing Units',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Discharge of Patients at the Clinical Nursing Units.pdf'
-     },
-  {'name': 'Dispensing of Medical Supplies for Admitted Patients',
-   'category': 'nursing', 
-   'serviceType': 'External Services', 
-   'pdf': 'assets/BRGHGMC/NSD/External/Dispensing of Medical Supplies for Admitted Patients.pdf'},
-  {'name': 'Dispensing of Medical Supplies for Out-Patients',
-   'category': 'nursing', 
-   'serviceType': 'External Services',
-    'pdf': 'assets/BRGHGMC/NSD/External/Dispensing of Medical Supplies for Out-Patients.pdf'
-    },
-  {'name': 'Ears, Nose, Throat (ENT) Department Registration and Consultation',
-   'category': 'nursing', 
-   'serviceType': 'External Services', 
-   'pdf': 'assets/BRGHGMC/NSD/External/Ears, Nose, Throat (ENT) Department Registration and Consultation.pdf'
-   },
-  {'name': 'Geriatric OPD Patients Registration and Consultation',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Geriatric OPD Patients.pdf'
-     },
-  {'name': 'Hemodialysis Treatment for Admitted and Enrolled Hemodialysis Patients',
-   'category': 'nursing', 
-   'serviceType': 'External Services',
-    'pdf': 'assets/BRGHGMC/NSD/External/Hemodialysis Treatment for Admitted and Enrolled Hemodialysis Patients.pdf'
-    },
-  {'name': 'Human Immunodeficiency Virus (HIV) Counseling and Testing Services',
-   'category': 'nursing',
-    'serviceType': 'External Services', 
-    'pdf': 'assets/BRGHGMC/NSD/External/Human Immunodeficiency Virus (HIV) Counseling and Testing Services.pdf'
-    },
-  {'name': 'Issuance of Hemodialysis Documents',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Issuance of Hemodialysis Documents.pdf'
-     },
-  {'name': 'Management of Patient at the Emergency Department',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Management of Patient at the Emergency Department.pdf'
-     },
-  {'name': 'National Tuberculosis Program (NTP) Integrated Delivery of TB Services',
-   'category': 'nursing', 
-   'serviceType': 'External Services', 
-   'pdf': 'assets/BRGHGMC/NSD/External/National Tuberculosis Program (NTP) Integrated Delivery of TB Services.pdf'
-   },
-  {'name': 'Ophthalmology Department Eye Surgery and Laser Procedure',
-   'category': 'nursing', 
-   'serviceType': 'External Services',
-    'pdf': 'assets/BRGHGMC/NSD/External/Ophthalmology Department Eye Surgery and Laser Procedure.pdf'
-    },
-  {'name': 'Out-Patient Department Patients Registration and Consultation',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Out-Patient Department Patients Registration and Consultation.pdf'
-     },
-  {'name': 'Peritoneal Dialysis Exit Site Care and Change of Extension Catheter',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Exit Site Care and Change of Extension Catheter.pdf'
-     },
-  {'name': 'Peritoneal Dialysis Patients Registration and Consultation',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Patients Registration and Consultation.pdf'
-     },
-  {'name': 'Peritoneal Dialysis Z Benefit Claim for Enrolled OPD-PD Patients',
-   'category': 'nursing',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Z Benefit Claim for Enrolled OPD-PD Patients.pdf'
-     },
-  // NSD Internal
-  {'name': 'Admission and Discharge of Patient to Post-Anesthesia Care Unit',
-   'category': 'nursing',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/NSD/Internal/Admission and Discharge of Patient to Post-Anesthesia Care Unit.pdf'
-     },
-  {'name': 'Dispensing of Medical Supplies in Clinical Areas and Sections of the Hospital',
-   'category': 'nursing', 
-   'serviceType': 'Internal Services',
-    'pdf': 'assets/BRGHGMC/NSD/Internal/Dispensing of Medical Supplies in Clinical Areas and Sections of the Hospital.pdf'
-    },
-  {'name': 'Management of Patient for Surgery', 
-  'category': 'nursing',
-   'serviceType': 'Internal Services',
-    'pdf': 'assets/BRGHGMC/NSD/Internal/Management of Patient for Surgery.pdf'
-    },
-  {'name': 'Sterilization of Medical Supplies and Surgical Instruments',
-   'category': 'nursing',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/NSD/Internal/Sterilization of Medical Supplies and Surgical Instruments.pdf'
-     },
-
-  // ASD External
-  {'name': 'Classification of Admitted Patients (MSS Inpatient)',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Classification of Admitted Patients (MSS Inpatient).pdf'
-     },
-  {'name': 'Dispensing of Drugs and Medicines for In-Patients',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Dispensing of Drugs and Medicines for In-Patients.pdf'
-     },
-  {'name': 'Dispensing of Drugs and Medicines for Out-Patients',
-   'category': 'allied', 
-   'serviceType': 'External Services',
-    'pdf': 'assets/BRGHGMC/ASD/External/Dispensing of Drugs and Medicines for Out-Patients.pdf'
-    },
-  {'name': 'Enrollment to Point of Service Program',
-   'category': 'allied',
-    'serviceType': 'External Services', 
-    'pdf': 'assets/BRGHGMC/ASD/External/Enrollment to Point of Service Program.pdf'
-    },
-  {'name': 'Issuance of Death & Medical Certificate, Medical Abstract and Certificate of Confinement',
-   'category': 'allied',
-    'serviceType': 'External Services', 
-    'pdf': 'assets/BRGHGMC/ASD/External/Issuance of Death & Medical Certificate, Medical Abstract and Certificate of Confinement.pdf'
-    },
-  {'name': 'Issuance of Medical Certificate or Medical Abstract',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Issuance of Medical Certificate or Medical Abstract.pdf'
-     },
-  {'name': 'Issuance of Registered Birth Certificate',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Issuance of Registered Birth Certificate.pdf'
-     },
-  {'name': 'Medication Counseling for OPD Geriatric Patients',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Medication Counseling for OPD Geriatric Patientspdf.pdf'
-     },
-  {'name': 'Nutrition Care Process',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Nutrition Care Process.pdf'
-     },
-  {'name': 'Patient Classification (Malasakit Center In-Patient)',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Patient Classification (Malasakit Center In–Patient).pdf'
-     },
-  {'name': 'Patient Classification (Malasakit Center Out-Patient)',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Patient Classification (Malasakit Center Out-Patient).pdf'
-     },
-  {'name': 'Patient Classification MSS - Emergency Room',
-   'category': 'allied',
-    'serviceType': 'External Services', 
-    'pdf': 'assets/BRGHGMC/ASD/External/Patient Classification MSS - Emergency Room.pdf'
-    },
-  {'name': 'Tube Feeding Instruction to Patients Watcher/Patient',
-   'category': 'allied',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/ASD/External/Tube Feeding Instruction to Patients Watcher_Patient.pdf'
-     },
-
-     //Hospital Internal
-  {'name': 'Corrective Maintenance of Information and Communication Technology (ICT) Equipment',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Corrective Maintenance of Information and Communication Technology (ICT) Equipment.pdf'
-     },
-
-     {'name': 'Internal/Fabrication of Linen',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Fabrication of Linen.pdf'
-     },
-
-       {'name': 'Issuance of Clean Linen',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Issuance of Clean Linen.pdf'
-     },
-
-     {'name': 'Leave of Absence Application',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Leave of Absence Application.pdf'
-     },
-
-
-     {'name': 'Payment of Infrastructure Projects Billing',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Payment of Infrastructure Projects Billing.pdf'
-     },
-
-     {'name': 'Preparation of Payroll for Non-Permanent Employees',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Preparation of Payroll for Non-Permanent Employees.pdf'
-     },
-
-     {'name': 'Processing of Obligation Request and Status (ORS)_Budget Utilization Request and Status(BURS)',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Obligation Request and Status (ORS)_Budget Utilization Request and Status(BURS).pdf'
-     },
-
-     {'name': 'Processing of Payrolls',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Payrolls.pdf'
-     },
-
-     {'name': 'Processing of Purchase Orders (Bidding)',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Purchase Orders (Bidding).pdf'
-     },
-
-
-     {'name': 'Processing of Purchase Orders (Simple Value Procurement)',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Purchase Orders (Simple Value Procurement).pdf'
-     },
-
-     {'name': 'Processing of Request for Documents_Records of Employees',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Request for Documents_Records of Employees.pdf'
-     },
-
-     {'name': 'Processing of Service Request per Project_Activity in the Carpentry Section',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Carpentry Section.pdf'
-     },
-
-     {'name': 'Processing of Service Request per Project_Activity in the Electrical Section',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Electrical Section.pdf'
-     },
-
-     {'name': 'Processing of Service Request per Project_Activity in the Medical Equipment Maintenance Unit',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Medical Equipment Maintenance Unit.pdf'
-     },
-
-     {'name': 'Processing of Service Request per Project_Activity in the Plumbing Section',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Processing of Service Request per Project_Activity in the Plumbing Section.pdf'
-     },
-
-     {'name': 'Releasing of Cash Benefits',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Releasing of Cash Benefits.pdf'
-     },
-
-     {'name': 'Replacement of Identification Card.',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Replacement of Identification Card..pdf'
-     },
-
-     {'name': 'Request for Motor Vehicle for Emergency Referral',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Request for Motor Vehicle for Emergency Referral.pdf'
-     },
-     {'name': '/Request of Motor Vehicle for Official Business',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal//Request of Motor Vehicle for Official Business.pdf'
-     },
-     {'name': 'Requisition and Issuance of Supplies, Materials and Equipment',
-   'category': 'ops',
-    'serviceType': 'Internal Services',
-     'pdf': 'assets/BRGHGMC/Host/Internal/Requisition and Issuance of Supplies, Materials and Equipment.pdf'
-     },
-
-     // External Service Hospiatal
-     {'name': 'Acceptance of Job Application',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Acceptance of Job Application.pdf'
-     },
-          {'name': 'Access to Closed Circuit Television Image_Footage',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Access to Closed Circuit Television Image_Footage.pdf'
-     },
-          {'name': 'Issuance of Official Receipt',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Issuance of Official Receipt.pdf'
-     },
-          {'name': 'PhilHealth Registration and Status Updating',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/PhilHealth Registration and Status Updating.pdf'
-     },
-          {'name': 'PhilHealth Status Verification',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/PhilHealth Status Verification.pdf'
-     },
-          {'name': 'Preparation of Order of Payment',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Preparation of Order of Payment.pdf'
-     },
-          {'name': 'Processing of Disbursement Vouchers',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Processing of Disbursement Vouchers.pdf'
-     },
-          {'name': 'Processing of In-Patient PhilHealth Claims',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Processing of In-Patient PhilHealth Claims.pdf'
-     },
-          {'name': 'Processing of Out-Patient PhilHealth Claims',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Processing of Out-Patient PhilHealth Claims.pdf'
-     },
-          {'name': 'Procurement Procedure for Alternative Mode of Procurement',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/PPA.pdf'
-     },
-          {'name': 'Procurement Procedure Through Competitive Bidding',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Procurement Procedure Through Competitive Bidding.pdf'
-     },
-          {'name': 'Purchasing of Bidding Documents Through Manual Payment',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Manual Payment.pdf'
-     },
-          {'name': 'Purchasing of Bidding Documents Through Online Payment',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Purchasing of Bidding Documents Through Online Payment.pdf'
-     },
-          {'name': 'Receiving of Deliveries, Supplies, Materials and Equipment',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Receiving of Deliveries, Supplies, Materials and Equipment.pdf'
-     },
-          {'name': 'Releasing of Checks',
-   'category': 'ops',
-    'serviceType': 'External Services',
-     'pdf': 'assets/BRGHGMC/Host/External/Releasing of Checks.pdf'
-     },
-
-          // list of offices
-     {'name': 'ListOffice',
-   'category': 'offices',
-    'serviceType': 'External Services',
-     'pdf': 'assets/pdfs/ListOffice.pdf'
-     },
-
-     // Feedback
-     {'name': 'Feedback and Complaints Mechanism',
-   'category': 'feedback',
-    'serviceType': 'External Services',
-     'pdf': 'assets/pdfs/Mechanism.pdf'
-     },
-];
+// amo di decalartion of pdf strings
 
 // maps category key to display name for search result subtitles
 const Map<String, String> _categoryLabels = {
@@ -504,8 +51,158 @@ class _HomePageState extends State<HomePage> {
   // the title shown in the back header when viewing a direct pdf
   String? _directPdfTitle;
 
+  // amo nadi screen time out - fires at 50s to show the 10s countdown warning
+  Timer? _warningTimer;
+  // amo nadi screen time out - fires at 60s to navigate back to landing page
+  Timer? _inactivityTimer;
+  // amo nadi coundow - ticks every second during the countdown alert
+  Timer? _countdownTimer;
+  // amo nadi coundow - controls visibility of the countdown alert overlay
+  bool _alertVisible = false;
+  // amo nadi coundow - current countdown value, 10 down to 0
+  int _countdown = 10;
+
+  // amo nadi screen time out - starts both the warning (50s) and inactivity (60s) timers
+  void _startInactivityTimer() {
+    _warningTimer?.cancel();
+    _inactivityTimer?.cancel();
+    _warningTimer = Timer(const Duration(seconds: 50), _showCountdownAlert); // amo nadi screen time out
+    _inactivityTimer = Timer(const Duration(minutes: 1), _returnToLanding);  // amo nadi screen time out
+  }
+
+  // amo nadi screen time out - resets all timers and dismisses alert on any user interaction
+  void _resetInactivityTimer() {
+    _dismissAlert();
+    _startInactivityTimer();
+  }
+
+  // amo nadi coundow - shows the 10s countdown alert when 10 seconds remain
+  void _showCountdownAlert() {
+    if (!mounted) return;
+    setState(() {
+      _alertVisible = true;  // amo nadi coundow
+      _countdown = 10;       // amo nadi coundow
+    });
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) { // amo nadi coundow
+      if (!mounted) { timer.cancel(); return; }
+      setState(() => _countdown--); // amo nadi coundow
+      if (_countdown <= 0) {
+        timer.cancel();
+        setState(() => _alertVisible = false); // amo nadi coundow
+      }
+    });
+  }
+
+  // amo nadi coundow - dismisses the alert and stops the countdown tick
+  void _dismissAlert() {
+    _countdownTimer?.cancel(); // amo nadi coundow
+    setState(() {
+      _alertVisible = false; // amo nadi coundow
+      _countdown = 10;       // amo nadi coundow
+    });
+  }
+
+  // amo nadi screen time out - navigates back to landing page when timeout fires
+  void _returnToLanding() {
+    if (!mounted) return;
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LandingPage()),
+      (route) => false,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startInactivityTimer(); // amo nadi screen time out - begin tracking inactivity on load
+  }
+
+  @override
+  void dispose() {
+    _warningTimer?.cancel();    // amo nadi screen time out
+    _inactivityTimer?.cancel(); // amo nadi screen time out
+    _countdownTimer?.cancel();  // amo nadi coundow
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      // amo nadi screen time out - any tap or drag resets the inactivity timer
+      behavior: HitTestBehavior.translucent,
+      onTap: _resetInactivityTimer,
+      onPanDown: (_) => _resetInactivityTimer(),
+      child: Stack(
+        children: [
+          _buildScaffold(context),
+
+          // amo nadi coundow - countdown alert overlay, shown when 10s remain
+          if (_alertVisible)
+            Center(
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  width: 260,
+                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // amo nadi coundow - big countdown number
+                      Text(
+                        '$_countdown',
+                        style: const TextStyle(
+                          fontSize: 64,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.green,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text('Returning to Home Screen',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 6),
+                      const Text(
+                        'No activity detected.\nTap dismiss to stay.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                          ),
+                          // amo nadi coundow - dismiss resets the full timer
+                          onPressed: _resetInactivityTimer,
+                          child: const Text('Dismiss',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildScaffold(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 61, 146, 95),
       appBar: AppBar(
@@ -668,7 +365,7 @@ class _HomePageState extends State<HomePage> {
       // filter services based on search query
       final results = _searchQuery.isEmpty
           ? <Map<String, String>>[]
-          : _allServices.where((s) => s['name']!.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+          : allServices.where((s) => s['name']!.toLowerCase().contains(_searchQuery.toLowerCase())).toList(); // amo di decalartion of pdf strings
 
       return Column(
         children: [
@@ -720,34 +417,157 @@ class _HomePageState extends State<HomePage> {
                     ),
             ),
 
-          // show welcome content if nothing typed yet
           if (_searchQuery.isEmpty)
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.asset('assets/bg.jpg', height: 200, fit: BoxFit.cover),
-                  ),
-                  Transform.translate(
-                    offset: const Offset(0, -70),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(160),
-                        border: Border.all(color: Colors.green, width: 5.0),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(160),
-                        child: Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMyvIs_OKj60qVtecCudySQlfVXsjwIrZ8w&s'),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final bool isLandscape = constraints.maxWidth > constraints.maxHeight;
+
+                  final Widget logoWidget = Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.green, width: 4.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: isLandscape ? 52 : 60,
+                      backgroundImage: const NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMyvIs_OKj60qVtecCudySQlfVXsjwIrZ8w&s',
                       ),
                     ),
-                  ),
-                  Text(
-                    "Citizen's Charter",
-                    style: GoogleFonts.inter(fontSize: 27, color: const Color.fromARGB(255, 0, 128, 0), fontWeight: FontWeight.w800, height: -2),
-                  ),
-                ],
+                  );
+
+                  final Widget titleWidget = Column(
+                    crossAxisAlignment: isLandscape
+                        ? CrossAxisAlignment.start
+                        : CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Citizen's Charter",
+                        textAlign: isLandscape ? TextAlign.left : TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: isLandscape ? 22 : 26,
+                          color: const Color.fromARGB(255, 0, 128, 0),
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Bicol Region General Hospital\n& Geriatric Medical Center',
+                        textAlign: isLandscape ? TextAlign.left : TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: isLandscape ? 12 : 13,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  );
+
+                  final Widget bgImage = ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Image.asset(
+                      'assets/bg.jpg',
+
+                      width: isLandscape ? null : constraints.maxWidth * 0.85,
+                      height: isLandscape ? constraints.maxHeight * 0.55 : 180,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+
+                  if (isLandscape) {
+                    return Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // left: background image with logo badged on its right edge
+                          Expanded(
+                            flex: 5,
+                            // Stack lets the logo overlap the image border
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                bgImage,
+                                // logo sits on the right edge of the image, vertically centered
+                                Positioned(
+                                  right: -44, // half of logo diameter to straddle the edge
+                                  top: 0,
+                                  bottom: 0,
+                                  child: Center(child: logoWidget),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // gap accounts for the logo badge that overlaps into this space
+                          const SizedBox(width: 60),
+
+                          // right: title + accent bar, logo is now on the image side
+                          Expanded(
+                            flex: 4,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                titleWidget,
+                                const SizedBox(height: 20),
+                                // decorative green accent bar
+                                Container(
+                                  width: 48,
+                                  height: 4,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    //port
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stack(
+                            alignment: Alignment.bottomCenter,
+                            clipBehavior: Clip.none,
+                            children: [
+                              bgImage,
+                              Positioned(
+                                bottom: -50,
+                                child: logoWidget,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 62),
+                          titleWidget,
+                          const SizedBox(height: 16),
+                          Container(
+                            width: 48,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
             ),
         ],
@@ -787,74 +607,133 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDropdown({required int index, required String categoryKey, required String hint, required List<String> items, required List<String> valueIds}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.green.shade300),
-      ),
-      child: DropdownButton<String>(
-        value: _dropdownValues[index],
-        hint: Text(hint, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-        isExpanded: true,
-        isDense: false,
-        itemHeight: 60,
-        underline: const SizedBox(),
-        icon: Icon(Icons.arrow_drop_down, color: Colors.grey[700]),
-        items: List.generate(items.length, (i) => DropdownMenuItem<String>(value: valueIds[i], child: Text(items[i]))),
-        selectedItemBuilder: (context) {
-          return List.generate(items.length, (i) {
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(hint, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                  Text(items[i], style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                ],
+    // amo nadi - hover state for this specific dropdown
+    return StatefulBuilder(
+      builder: (context, setLocal) {
+        bool hovered = false;
+        return StatefulBuilder(
+          builder: (context, setHover) {
+            return MouseRegion(
+              // amo nadi - light green background on hover
+              onEnter: (_) => setHover(() => hovered = true),
+              onExit: (_) => setHover(() => hovered = false),
+              cursor: SystemMouseCursors.click,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 180), // amo nadi - smooth hover transition
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  // amo nadi - switches to light green on hover, grey otherwise
+                  color: hovered ? Colors.green.shade50 : Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    // amo nadi - border also deepens on hover
+                    color: hovered ? Colors.green.shade500 : Colors.green.shade300,
+                  ),
+                ),
+                child: DropdownButton2<String>(
+                  value: _dropdownValues[index],
+                  hint: Text(hint, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                  isExpanded: true,
+                  underline: const SizedBox(),
+                  iconStyleData: IconStyleData(
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.grey[700]),
+                  ),
+                  // amo nadi - push menu below the button so it never covers the category label
+                  menuItemStyleData: const MenuItemStyleData(height: 48),
+                  dropdownStyleData: DropdownStyleData(
+                    // amo nadi - offset pushes the menu fully below the button
+                    offset: const Offset(0, -6),
+                    // amo nadi - rounded corners on the dropdown menu
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    maxHeight: 200, // amo nadi - cap height so it doesn't overlap too many items
+                  ),
+                  items: List.generate(
+                    items.length,
+                    (i) => DropdownMenuItem<String>(value: valueIds[i], child: Text(items[i])),
+                  ),
+                  selectedItemBuilder: (context) {
+                    return List.generate(items.length, (i) {
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(hint, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                            Text(items[i], style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                          ],
+                        ),
+                      );
+                    });
+                  },
+                  onChanged: (value) {
+                    if (value == null) return;
+                    final int pos = valueIds.indexOf(value);
+                    final String displayName = pos >= 0 ? items[pos] : value;
+                    setState(() {
+                      _dropdownValues[index] = value;
+                      _selectedCategoryKey = categoryKey;
+                      _selectedServiceType = displayName;
+                      _directPdfPath = null;
+                    });
+                  },
+                ),
               ),
             );
-          });
-        },
-        onChanged: (value) {
-          if (value == null) return;
-          final int pos = valueIds.indexOf(value);
-          final String displayName = pos >= 0 ? items[pos] : value;
-          setState(() {
-            _dropdownValues[index] = value;
-            _selectedCategoryKey = categoryKey;
-            _selectedServiceType = displayName;
-            _directPdfPath = null;
-          });
-        },
-      ),
+          },
+        );
+      },
     );
   }
 
   Widget _buildCategoryButton({required String label, required String categoryKey}) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(8),
-      onTap: () => setState(() {
-        _selectedCategoryKey = categoryKey;
-        _selectedServiceType = null;
-        _directPdfPath = null;
-      }),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.green.shade300),
-        ),
-        child: Row(
-          children: [
-            Expanded(child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
-            Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey[600]),
-          ],
-        ),
-      ),
+    // amo nadi - hover highlight for category buttons
+    return StatefulBuilder(
+      builder: (context, setHover) {
+        bool hovered = false;
+        return MouseRegion(
+          // amo nadi - light green on hover
+          onEnter: (_) => setHover(() => hovered = true),
+          onExit: (_) => setHover(() => hovered = false),
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () => setState(() {
+              _selectedCategoryKey = categoryKey;
+              _selectedServiceType = null;
+              _directPdfPath = null;
+            }),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180), // amo nadi - smooth hover transition
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+              decoration: BoxDecoration(
+                // amo nadi - light green on hover
+                color: hovered ? Colors.green.shade50 : Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: hovered ? Colors.green.shade500 : Colors.green.shade300,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Expanded(child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
+                  Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey[600]),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
+

@@ -36,6 +36,12 @@ class _MedicalCenterChiefOfficeViewState
 
   Timer? _inactivityTimer;
 
+  Timer? _warningTimer;
+  bool _alertVisible = false;
+  int _countdown =10;
+  Timer? _countdownTimer;
+
+
   // string path of assets declared
   static const String _chiefOfficePdf1 = 'assets/BRGHGMC/MCCO/External/medical.pdf';
   // internal services pdf path
@@ -53,12 +59,17 @@ class _MedicalCenterChiefOfficeViewState
   }
 
   void _startInactivityTimer() {
-    _inactivityTimer?.cancel(); // amo nadi screen timeout
-    _inactivityTimer = Timer(const Duration(seconds: 20), _returnToLanding); // amo nadi screen timeout
+    _inactivityTimer?.cancel();
+    _warningTimer?.cancel();
+
+    _warningTimer = Timer(const Duration(seconds: 10), _showCountdownAlert);
+
+    _inactivityTimer = Timer(const Duration(seconds: 20), _returnToLanding);
   }
 
   void _resetInactivityTimer() {
-    _startInactivityTimer(); // amo nadi screen timeout
+    _dismissAlert();        // hide alert if visible
+    _startInactivityTimer(); // restart both timers 
   }
 
   void _returnToLanding() {
@@ -68,6 +79,35 @@ class _MedicalCenterChiefOfficeViewState
         (route) => false,
       );
     }
+  }
+
+     //  when 10 seconds remain before timeout
+  void _showCountdownAlert() {
+    if (!mounted) return;
+    setState(() {
+      _alertVisible = true;
+      _countdown = 10;
+    });
+
+    //  every second from 10 down to 0
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) { timer.cancel(); return; }
+      setState(() => _countdown--);
+// alert count
+      if (_countdown <= 0) {
+        timer.cancel();
+        setState(() => _alertVisible = false);
+      }
+    });
+  }
+
+  void _dismissAlert() {
+    _countdownTimer?.cancel();
+    setState(() {
+      _alertVisible = false;
+      _countdown = 10;
+    });
   }
 
   @override
@@ -81,14 +121,81 @@ class _MedicalCenterChiefOfficeViewState
     _inactivityTimer?.cancel(); // amo nadi screen timeout
     super.dispose();
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      behavior: HitTestBehavior.translucent, // amo nadi screen timeout
-      onTap: _resetInactivityTimer, // amo nadi screen timeout
-      onPanDown: (_) => _resetInactivityTimer(), // amo nadi screen timeout
-      child: _buildContent(context),
+      behavior: HitTestBehavior.translucent,
+      onTap: _resetInactivityTimer,
+      onPanDown: (_) => _resetInactivityTimer(),
+      // alert top
+      child: Stack(
+        children: [
+          _buildContent(context),
+
+          // amo di count down float
+          if (_alertVisible)
+            Center(
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  width: 200,
+                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // countdown number big and bold
+                      Text(
+                        '$_countdown',
+                        style: const TextStyle(
+                          fontSize: 45,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.green,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Alert',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        'Returning to landing page due to inactivity.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: _dismissAlert,
+                          child: const Text('Dismiss', style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 
