@@ -25,6 +25,7 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
   String _searchQuery = '';
     String? _directPdfPath; // amo di
   String? _directPdfTitle; // amo di
+  final PdfViewerController _pdfController = PdfViewerController();
       Timer? _inactivityTimer;
      Timer? _warningTimer;       //  the 10s countdown alert
 
@@ -72,9 +73,9 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
     _inactivityTimer?.cancel();
     _warningTimer?.cancel();
 
-    _warningTimer = Timer(const Duration(seconds: 10), _showCountdownAlert);
+    _warningTimer = Timer(const Duration(seconds: 50), _showCountdownAlert);
 
-    _inactivityTimer = Timer(const Duration(seconds: 20), _returnToLanding);
+    _inactivityTimer = Timer(const Duration(minutes: 1), _returnToLanding);
   }
 
   void _resetInactivityTimer() {
@@ -129,17 +130,17 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
   @override
   void dispose() {
     _inactivityTimer?.cancel(); // amo nadi screen timeout
+    _warningTimer?.cancel();
+    _countdownTimer?.cancel();
     super.dispose();
   }
  
  
    @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: _resetInactivityTimer,
-      onPanDown: (_) => _resetInactivityTimer(),
-      // alert top
+    return Listener(
+      onPointerDown: (_) => _resetInactivityTimer(),
+      onPointerMove: (_) => _resetInactivityTimer(),
       child: Stack(
         children: [
           _buildContent(context),
@@ -403,7 +404,7 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
         // view of pdf preview calling the declared path of the assets
         return ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: PdfViewer.asset(assetPath, params: const PdfViewerParams()),
+          child: PdfViewer.asset(assetPath, controller: _pdfController, params: const PdfViewerParams()),
         );
       },
     );
@@ -479,7 +480,14 @@ class _AlliedServiceDivisionViewState extends State<AlliedServiceDivisionView> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
         // when tapped, sets opened to this button title, switches to detail view
-        onPressed: () => setState(() => opened = title),
+        onPressed: () {
+          if (opened != title) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _pdfController.goToPage(pageNumber: 1);
+            });
+          }
+          setState(() => opened = title);
+        },
         child: Row(
           children: [
             const Icon(Icons.picture_as_pdf, color: Colors.red),
