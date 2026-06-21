@@ -1,14 +1,14 @@
  // amo di decalartion of pdf strings
-// used by both the homepage search and the medical service division search
+// every service in the app is listed here with its name, category, type, and pdf file
 const List<Map<String, String>> allServices = [
-// MCCO External
+// MCCO services
   {'name': 'Handling and Resolution of Complaints filed with the PACD, 8888, PCC,and CCB and direct filing with the legal unitf',
    'category': 'chief', 
    'serviceType': 'External Services', 
    'pdf': 'assets/BRGHGMC/MCCO/External/medical.pdf'
    },
 
-  // MSD External
+  // Medical services from outside patients
   {'name': 'Dental Consultation and Treatment',
    'category': 'medical', 
    'serviceType': 'External Services', 
@@ -49,14 +49,14 @@ const List<Map<String, String>> allServices = [
    'serviceType': 'External Services',
     'pdf': 'assets/BRGHGMC/MSD/External/Provision of Satellite Laboratory Servies.pdf'
     },
-  // MSD Internal
+  // Medical internal service
   {'name': 'Special Function Meal Request',
    'category': 'medical', 
    'serviceType': 'Internal Services',
     'pdf': 'assets/BRGHGMC/MSD/Internal/Special Function Meal Request.pdf'
     },
 
-  // NSD External
+  // Nursing services from outside patients
   {'name': 'Admission from Emergency Department to Clinical Wards',
    'category': 'nursing', 
    'serviceType': 'External Services', 
@@ -156,7 +156,7 @@ const List<Map<String, String>> allServices = [
     'serviceType': 'External Services',
      'pdf': 'assets/BRGHGMC/NSD/External/Peritoneal Dialysis Z Benefit Claim for Enrolled OPD-PD Patients.pdf'
      },
-  // NSD Internal
+  // Nursing internal services
   {'name': 'Admission and Discharge of Patient to Post-Anesthesia Care Unit',
    'category': 'nursing',
     'serviceType': 'Internal Services',
@@ -178,7 +178,7 @@ const List<Map<String, String>> allServices = [
      'pdf': 'assets/BRGHGMC/NSD/Internal/Sterilization of Medical Supplies and Surgical Instruments.pdf'
      },
 
-  // ASD External
+  // Allied health services from outside patients
   {'name': 'Classification of Admitted Patients (MSS Inpatient)',
    'category': 'allied',
     'serviceType': 'External Services',
@@ -244,7 +244,7 @@ const List<Map<String, String>> allServices = [
     'serviceType': 'External Services',
      'pdf': 'assets/BRGHGMC/ASD/External/Tube Feeding Instruction to Patients Watcher_Patient.pdf'
      },
-     // External Service Hospiatal
+     // Hospital operations services from outside
      {'name': 'Acceptance of Job Application',
    'category': 'ops',
     'serviceType': 'External Services',
@@ -321,14 +321,14 @@ const List<Map<String, String>> allServices = [
      'pdf': 'assets/BRGHGMC/Host/External/Releasing of Checks.pdf'
      },
 
-     // list of offices
+     // list of offices pdf entry
      {'name': 'ListOffice',
    'category': 'offices',
     'serviceType': 'External Services',
      'pdf': 'assets/pdfs/ListOffice.pdf'
      },
 
-     // Feedback
+     // feedback mechanism pdf entry
      {'name': 'Feedback and Complaints Mechanism',
    'category': 'feedback',
     'serviceType': 'External Services',

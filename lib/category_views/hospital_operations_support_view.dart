@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
-import 'dart:async'; 
-import 'package:flutter11th/landing_page.dart';
-
-
-/* import 'allied_service_division_view.dart';
-import 'list_of_offices_view.dart';
-import 'medical_service_division_view.dart';
-import 'nursing_service_division_view.dart';
-import 'allied_service_division_view.dart'; */
-
+import '../all_services.dart';
 
 class HospitalOperationsSupportView extends StatefulWidget {
   final String? serviceType;
@@ -26,25 +17,18 @@ class HospitalOperationsSupportView extends StatefulWidget {
   @override
   State<HospitalOperationsSupportView> createState() =>
       _HospitalOperationsSupportViewState();
-     
 }
 
 class _HospitalOperationsSupportViewState
     extends State<HospitalOperationsSupportView> {
   String? opened;
-
   String searchQuery = "";
 
+  // amo nadi - PDF controller keeps scroll position stable
+  final PdfViewerController _pdfController = PdfViewerController();
 
-  //timer for screen inactivty
-  Timer? _inactivityTimer; 
-        Timer? _warningTimer;       //  the 10s countdown alert
+  // timers removed - homepage handles inactivity timeout for the whole page
 
-  bool _alertVisible = false; 
-  int _countdown = 10;       
-  Timer? _countdownTimer;  
-
-  // Map each service to its PDF file
   late Map<String, String> servicePdfMap;
 
 
@@ -220,150 +204,20 @@ class _HospitalOperationsSupportViewState
      .toList();
 }
 
-   void _startInactivityTimer() {
-    _inactivityTimer?.cancel();
-    _warningTimer?.cancel();
-
-    _warningTimer = Timer(const Duration(seconds: 10), _showCountdownAlert);
-
-    _inactivityTimer = Timer(const Duration(seconds: 20), _returnToLanding);
-  }
-
-
-
-    
- void _resetInactivityTimer() {
-    _dismissAlert();        // hide alert if visible
-    _startInactivityTimer(); // restart both timers 
-  }
-
-
-  void _returnToLanding() {
-    if (mounted) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const LandingPage()), // amo nadi screen timeout
-        (route) => false,
-      );
-    }
-  }
-
-  void _showCountdownAlert() {
-    if (!mounted) return;
-    setState(() {
-      _alertVisible = true;
-      _countdown = 10;
-    });
-
-    //  every second from 10 down to 0
-    _countdownTimer?.cancel();
-    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) { timer.cancel(); return; }
-      setState(() => _countdown--);
-// alert count
-      if (_countdown <= 0) {
-        timer.cancel();
-        setState(() => _alertVisible = false);
-      }
-    });
-  }
-
-  void _dismissAlert() {
-    _countdownTimer?.cancel();
-    setState(() {
-      _alertVisible = false;
-      _countdown = 10;
-    });
-  }
-
-
   @override
   void initState() {
     super.initState();
-    _startInactivityTimer(); // amo nadi screen timeout
-        servicePdfMap = _buildServicePdfMap();
+    servicePdfMap = _buildServicePdfMap();
   }
 
   @override
   void dispose() {
-    _inactivityTimer?.cancel(); // amo nadi screen timeout
     super.dispose();
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: _resetInactivityTimer,
-      onPanDown: (_) => _resetInactivityTimer(),
-      // alert top
-      child: Stack(
-        children: [
-          _buildContent(context),
-
-          // amo di count down float
-          if (_alertVisible)
-            Center(
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  width: 200,
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.25),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // countdown number big and bold
-                      Text(
-                        '$_countdown',
-                        style: const TextStyle(
-                          fontSize: 45,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.green,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'Alert',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Returning to landing page due to inactivity.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          onPressed: _dismissAlert,
-                          child: const Text('Dismiss', style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
+    return _buildContent(context);
   }
   
   Widget _buildContent(BuildContext context) {
@@ -456,9 +310,12 @@ class _HospitalOperationsSupportViewState
 
         return ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: PdfViewer.asset(
-            assetPath,
-            params: const PdfViewerParams(),
+          // amo nadi - GestureDetector overlay absorbs taps so PDF doesn't reset on click
+          child: Stack(
+            children: [
+              PdfViewer.asset(assetPath, controller: _pdfController, params: const PdfViewerParams()),
+              GestureDetector(onTap: () {}, behavior: HitTestBehavior.translucent, child: const SizedBox.expand()),
+            ],
           ),
         );
       },
@@ -505,17 +362,17 @@ class _HospitalOperationsSupportViewState
         children: [
           IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              setState(() {
-                opened = null;
-              });
-            },
+            onPressed: () => setState(() => opened = null),
           ),
           const SizedBox(width: 4),
-          Text(
-            opened ?? 'View',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
+          // amo nadi - Expanded prevents title from overflowing right edge
+          Expanded(
+            child: Text(
+              opened ?? 'View',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ),
         ],
       ),

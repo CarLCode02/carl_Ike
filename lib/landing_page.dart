@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'homepage.dart';
-import 'user_guide.dart'; // user guide chatbot button and dialog
+import 'user_guide.dart'; // the user guide button shown on this page
 
-// amo nadi logo animation - converted to StatefulWidget to support AnimationController
+// amo nadi logo animation - this page needs animation so it uses StatefulWidget
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
@@ -14,50 +14,50 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage>
     with SingleTickerProviderStateMixin {
-  // amo nadi logo animation - single controller drives all animations
+  // amo nadi logo animation - one controller runs all three animations together
   late final AnimationController _controller;
 
-  // Amo nadi timer - tracks current time, updated every second
+  // Amo nadi timer - holds the current time, gets updated every second
   late DateTime _now;
   Timer? _clockTimer; // Amo nadi timer
 
-  // amo nadi logo animation - scale: logo grows from 0.4 to 1.0
+  // amo nadi logo animation - makes the logo grow from small to full size
   late final Animation<double> _scaleAnim;
 
-  // amo nadi logo animation - fade: everything fades in from 0 to 1
+  // amo nadi logo animation - makes everything fade in from invisible to visible
   late final Animation<double> _fadeAnim;
 
-  // amo nadi logo animation - slide: content rises up slightly on enter
+  // amo nadi logo animation - makes the content slide up a little when it appears
   late final Animation<Offset> _slideAnim;
 
   @override
   void initState() {
     super.initState();
 
-    // Amo nadi timer - initialize with current time
+    // Amo nadi timer - set the time right away when the page opens
     _now = DateTime.now();
-    // Amo nadi timer - tick every second to keep time live
+    // Amo nadi timer - update the clock every second
     _clockTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() => _now = DateTime.now());
     });
 
-    // amo nadi logo animation - 900ms total duration for the entrance
+    // amo nadi logo animation - the whole animation takes 900ms
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 900),
     );
 
-    // amo nadi logo animation - scale bounces in with elasticOut for a lively feel
+    // amo nadi logo animation - logo bounces in, elasticOut gives it a springy feel
     _scaleAnim = Tween<double>(begin: 0.4, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.elasticOut),
     );
 
-    // amo nadi logo animation - fade covers the full duration smoothly
+    // amo nadi logo animation - everything fades in smoothly over the full duration
     _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
 
-    // amo nadi logo animation - content slides up from slightly below
+    // amo nadi logo animation - content starts a little below and moves up
     _slideAnim = Tween<Offset>(
       begin: const Offset(0, 0.12),
       end: Offset.zero,
@@ -65,34 +65,34 @@ class _LandingPageState extends State<LandingPage>
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    // amo nadi logo animation - start the animation as soon as the page loads
+    // amo nadi logo animation - start playing the animation right away
     _controller.forward();
   }
 
   @override
   void dispose() {
-    _clockTimer?.cancel(); // Amo nadi timer - stop the timer on dispose
-    _controller.dispose(); // amo nadi logo animation - always dispose the controller
+    _clockTimer?.cancel(); // Amo nadi timer - stop the clock when leaving this page
+    _controller.dispose(); // amo nadi logo animation - clean up the animation
     super.dispose();
   }
 
-  // Amo nadi timer - pads single digits with a leading zero (e.g. 9 → "09")
+  // Amo nadi timer - adds a zero in front of single digit numbers like 9 becomes 09
   String _pad(int n) => n.toString().padLeft(2, '0');
 
-  // Amo nadi timer - converts 24h hour to 12h and returns AM/PM label
+  // Amo nadi timer - checks if it is morning or afternoon
   String get _amPm => _now.hour < 12 ? 'am' : 'pm';
 
-  // Amo nadi timer - converts 24h to 12h format (0 → 12, 13 → 1, etc.)
+  // Amo nadi timer - converts 24 hour time to 12 hour, midnight and noon become 12
   int get _hour12 {
     final h = _now.hour % 12;
     return h == 0 ? 12 : h;
   }
 
-  // Amo nadi timer - formats time as hh:MM:SS (no AM/PM, shown separately)
+  // Amo nadi timer - builds the time string without AM/PM since that is shown separately
   String get _timeString =>
       '${_pad(_hour12)}:${_pad(_now.minute)}:${_pad(_now.second)}';
 
-  // Amo nadi timer - formats date as "Wednesday, April 1, 2026"
+  // Amo nadi timer - builds the full date string like Wednesday, April 1, 2026
   String get _dateString {
     const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
     const months = ['January','February','March','April','May','June',
@@ -113,7 +113,7 @@ class _LandingPageState extends State<LandingPage>
           // background image
           Image.asset(backgroundImage, fit: BoxFit.cover),
 
-          // dark gradient overlay
+          // dark green to black gradient on top of the image so text is readable
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -128,14 +128,14 @@ class _LandingPageState extends State<LandingPage>
             ),
           ),
 
-          // Amo nadi timer - live clock pinned to the top center of the screen
+          // Amo nadi timer - clock sitting at the top center of the screen
           Positioned(
             top: 32,
             left: 0,
             right: 0,
             child: Column(
               children: [
-                // Amo nadi timer - time and AM/PM in a Row so AM/PM can have its own smaller size
+                // Amo nadi timer - time and AM/PM side by side, AM/PM is smaller
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -153,7 +153,7 @@ class _LandingPageState extends State<LandingPage>
                       padding: const EdgeInsets.only(left: 6, bottom: 6),
                       child: Text(
                         _amPm,
-                        // time am pm size - smaller than the main time digits
+                        // time am pm size - AM/PM is smaller so it looks like a label not a number
                         style: GoogleFonts.inter(
                           fontSize: 28,
                           fontWeight: FontWeight.w600,
@@ -180,15 +180,16 @@ class _LandingPageState extends State<LandingPage>
           ),
 
           Center(
+            // amo nadi logo animation - everything fades in together
             child: FadeTransition(
               opacity: _fadeAnim,
-              // amo nadi logo animation - SlideTransition lifts content upward on enter
+              // amo nadi logo animation - content slides up when it appears
               child: SlideTransition(
                 position: _slideAnim,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // amo nadi logo animation - ScaleTransition makes the logo pop in
+                    // amo nadi logo animation - logo pops in from small to full size
                     ScaleTransition(
                       scale: _scaleAnim,
                       child: Container(
@@ -301,7 +302,7 @@ class _LandingPageState extends State<LandingPage>
             ),
           ),
 
-          // user guide chatbot button — lower left corner of the landing page
+          // user guide button sitting at the bottom right corner
           const UserGuideButton(),
         ],
       ),

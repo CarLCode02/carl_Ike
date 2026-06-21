@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// list of all 6 user guide images from assets
+// the 6 guide images stored in assets
 const List<String> _guideImages = [
   'assets/CC User Guide/1.png',
   'assets/CC User Guide/2.png',
@@ -11,7 +11,7 @@ const List<String> _guideImages = [
   'assets/CC User Guide/6.png',
 ];
 
-// step captions shown below each guide image
+// the text shown below each image explaining what that step is about
 const List<String> _guideCaptions = [
   'Step 1: Tap PROCEED on the landing page to enter the Citizen\'s Charter.',
   'Step 2: The left panel shows all service categories. Tap one to expand it.',
@@ -21,7 +21,7 @@ const List<String> _guideCaptions = [
   'Step 6: Use the search bar to find any service across all categories.',
 ];
 
-// UserGuideDialog - full-screen dialog that shows the image slideshow
+// the popup that shows the guide images one by one
 class UserGuideDialog extends StatefulWidget {
   const UserGuideDialog({super.key});
 
@@ -30,7 +30,7 @@ class UserGuideDialog extends StatefulWidget {
 }
 
 class _UserGuideDialogState extends State<UserGuideDialog> {
-  // tracks which guide step is currently shown
+  // remembers which page the user is on right now
   int _currentPage = 0;
   final PageController _pageController = PageController();
 
@@ -40,7 +40,7 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
     super.dispose();
   }
 
-  // go to next page or close if on last page
+  // go to next page, or close the popup if already on the last page
   void _next() {
     if (_currentPage < _guideImages.length - 1) {
       _pageController.nextPage(
@@ -48,11 +48,11 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
         curve: Curves.easeInOut,
       );
     } else {
-      Navigator.of(context).pop(); // close on last step
+      Navigator.of(context).pop(); // close the popup when done
     }
   }
 
-  // go to previous page
+  // go back to the previous page
   void _prev() {
     if (_currentPage > 0) {
       _pageController.previousPage(
@@ -87,7 +87,7 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // header bar
+            // top bar with title and step counter
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
               decoration: BoxDecoration(
@@ -108,7 +108,7 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
                       ),
                     ),
                   ),
-                  // step counter e.g. "2 / 6"
+                  // shows which step you are on like 2 / 6
                   Text(
                     '${_currentPage + 1} / ${_guideImages.length}',
                     style: GoogleFonts.inter(
@@ -118,7 +118,7 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  // close button
+                  // X button to close the popup
                   GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
                     child: const Icon(Icons.close, color: Colors.white, size: 20),
@@ -127,7 +127,7 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
               ),
             ),
 
-            // image slideshow
+            // the images you swipe through
             SizedBox(
               height: 380,
               child: PageView.builder(
@@ -149,7 +149,7 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
               ),
             ),
 
-            // dot indicators
+            // small dots at the bottom showing which step you are on
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(_guideImages.length, (i) {
@@ -169,7 +169,7 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
             ),
             const SizedBox(height: 12),
 
-            // caption text for current step
+            // the description text for the current step
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
@@ -184,12 +184,12 @@ class _UserGuideDialogState extends State<UserGuideDialog> {
             ),
             const SizedBox(height: 16),
 
-            // prev / next buttons
+            // the Previous and Next buttons at the bottom
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: Row(
                 children: [
-                  // prev — hidden on first step
+                  // Previous button, hidden on the first step
                   if (!isFirst)
                     Expanded(
                       child: OutlinedButton.icon(

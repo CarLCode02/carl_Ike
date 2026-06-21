@@ -51,7 +51,10 @@ class _HomePageState extends State<HomePage> {
   // the title shown in the back header when viewing a direct pdf
   String? _directPdfTitle;
 
-  // amo nadi screen time out - fires at 50s to show the 10s countdown warning
+  // amo nadi - PDF controller keeps scroll position stable across setState calls
+  final PdfViewerController _pdfController = PdfViewerController();
+  // amo nadi - tracks last opened path so we only reset controller when path changes
+  String? _lastPdfPath;
   Timer? _warningTimer;
   // amo nadi screen time out - fires at 60s to navigate back to landing page
   Timer? _inactivityTimer;
@@ -70,10 +73,13 @@ class _HomePageState extends State<HomePage> {
     _inactivityTimer = Timer(const Duration(minutes: 1), _returnToLanding);  // amo nadi screen time out
   }
 
-  // amo nadi screen time out - resets all timers and dismisses alert on any user interaction
+  // amo nadi screen time out - resets timers WITHOUT setState so PDF doesn't rebuild on every tap
   void _resetInactivityTimer() {
-    _dismissAlert();
-    _startInactivityTimer();
+    if (_alertVisible) _dismissAlert();
+    _inactivityTimer?.cancel();
+    _warningTimer?.cancel();
+    _warningTimer = Timer(const Duration(seconds: 50), _showCountdownAlert);  // amo nadi screen time out
+    _inactivityTimer = Timer(const Duration(minutes: 1), _returnToLanding);   // amo nadi screen time out
   }
 
   // amo nadi coundow - shows the 10s countdown alert when 10 seconds remain
@@ -128,11 +134,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      // amo nadi screen time out - any tap or drag resets the inactivity timer
-      behavior: HitTestBehavior.translucent,
-      onTap: _resetInactivityTimer,
-      onPanDown: (_) => _resetInactivityTimer(),
+    return Listener(
+      // amo nadi screen time out - Listener catches ALL pointer events including scroll
+      // unlike GestureDetector which competes with child scrollables
+      onPointerDown: (_) => _resetInactivityTimer(),
+      onPointerMove: (_) => _resetInactivityTimer(), // amo nadi screen time out - scroll/drag resets timer
       child: Stack(
         children: [
           _buildScaffold(context),
@@ -279,7 +285,8 @@ class _HomePageState extends State<HomePage> {
                   _buildDropdown(index: 4, categoryKey: 'ops', 
                   hint: 'Hospital Operations and Patient Support Service Division', 
                   items: const ['External Services', 'Internal Services'], 
-                  valueIds: const ['ext', 'int']),
+                  valueIds: const ['ext', 'int'],
+                  verticalPadding: 2), // amo nadi - less padding so 2-line text fits without overflow
                   const SizedBox(height: 12),
                   _buildCategoryButton(label: 'Feedback and Complaints Mechanism', 
                   categoryKey: 'feedback'),
@@ -321,7 +328,8 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // back button header to go back to search
-          Container(
+          ClipRect( // amo nadi - prevents title text from overflowing right edge when screen shrinks
+            child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
@@ -343,11 +351,13 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     _directPdfTitle ?? '',
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.ellipsis, // amo nadi - ellipsis for long titles
+                    maxLines: 1,
                   ),
                 ),
               ],
             ),
+          ),
           ),
           // pdf viewer
           Expanded(
@@ -407,6 +417,11 @@ class _HomePageState extends State<HomePage> {
                             trailing: const Icon(Icons.arrow_forward_ios, size: 14),
                             // when tapped, set the direct pdf path to open it immediately
                             onTap: () => setState(() {
+                              // amo nadi - go to page 1 only when opening a different PDF
+                              if (_lastPdfPath != service['pdf']) {
+                                _lastPdfPath = service['pdf'];
+                                _pdfController.goToPage(pageNumber: 1);
+                              }
                               _directPdfPath = service['pdf'];
                               _directPdfTitle = service['name'];
                               _searchQuery = '';
@@ -600,107 +615,118 @@ class _HomePageState extends State<HomePage> {
         }
         return ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: PdfViewer.asset(assetPath, params: const PdfViewerParams()),
+          // amo nadi - Stack with a transparent tap-absorber on top
+          // absorbs tap/click events so PDF doesn't reset, but scroll still works
+          child: Stack(
+            children: [
+              PdfViewer.asset(assetPath, params: const PdfViewerParams()),
+              // amo nadi - catches taps and does nothing, scroll passes through
+              GestureDetector(
+                onTap: () {}, // absorb tap silently
+                behavior: HitTestBehavior.translucent,
+                child: const SizedBox.expand(),
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
-  Widget _buildDropdown({required int index, required String categoryKey, required String hint, required List<String> items, required List<String> valueIds}) {
-    // amo nadi - hover state for this specific dropdown
+  Widget _buildDropdown({required int index, required String categoryKey, required String hint, required List<String> items, required List<String> valueIds, double verticalPadding = 6}) {
+    // amo nadi - hover state declared outside builder so it persists across rebuilds
+    bool hovered = false;
     return StatefulBuilder(
-      builder: (context, setLocal) {
-        bool hovered = false;
-        return StatefulBuilder(
-          builder: (context, setHover) {
-            return MouseRegion(
-              // amo nadi - light green background on hover
-              onEnter: (_) => setHover(() => hovered = true),
-              onExit: (_) => setHover(() => hovered = false),
-              cursor: SystemMouseCursors.click,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 180), // amo nadi - smooth hover transition
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  // amo nadi - switches to light green on hover, grey otherwise
-                  color: hovered ? Colors.green.shade50 : Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    // amo nadi - border also deepens on hover
-                    color: hovered ? Colors.green.shade500 : Colors.green.shade300,
-                  ),
-                ),
-                child: DropdownButton2<String>(
-                  value: _dropdownValues[index],
-                  hint: Text(hint, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                  isExpanded: true,
-                  underline: const SizedBox(),
-                  iconStyleData: IconStyleData(
-                    icon: Icon(Icons.arrow_drop_down, color: Colors.grey[700]),
-                  ),
-                  // amo nadi - push menu below the button so it never covers the category label
-                  menuItemStyleData: const MenuItemStyleData(height: 48),
-                  dropdownStyleData: DropdownStyleData(
-                    // amo nadi - offset pushes the menu fully below the button
-                    offset: const Offset(0, -6),
-                    // amo nadi - rounded corners on the dropdown menu
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    maxHeight: 200, // amo nadi - cap height so it doesn't overlap too many items
-                  ),
-                  items: List.generate(
-                    items.length,
-                    (i) => DropdownMenuItem<String>(value: valueIds[i], child: Text(items[i])),
-                  ),
-                  selectedItemBuilder: (context) {
-                    return List.generate(items.length, (i) {
-                      return Align(
-                        alignment: Alignment.centerLeft,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(hint, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                            Text(items[i], style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                          ],
-                        ),
-                      );
-                    });
-                  },
-                  onChanged: (value) {
-                    if (value == null) return;
-                    final int pos = valueIds.indexOf(value);
-                    final String displayName = pos >= 0 ? items[pos] : value;
-                    setState(() {
-                      _dropdownValues[index] = value;
-                      _selectedCategoryKey = categoryKey;
-                      _selectedServiceType = displayName;
-                      _directPdfPath = null;
-                    });
-                  },
+      builder: (context, setHover) {
+        return MouseRegion(
+          onEnter: (_) => setHover(() => hovered = true),
+          onExit: (_) => setHover(() => hovered = false),
+          cursor: SystemMouseCursors.click,
+          // amo nadi - IntrinsicHeight lets the container grow to fit content, no fixed height overflow
+          child: IntrinsicHeight(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: verticalPadding),
+              decoration: BoxDecoration(
+                color: hovered ? Colors.green.shade50 : Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: hovered ? Colors.green.shade500 : Colors.green.shade300,
                 ),
               ),
-            );
-          },
+              child: DropdownButton2<String>(
+                value: _dropdownValues[index],
+                hint: Text(
+                  hint,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                isExpanded: true,
+                underline: const SizedBox(),
+                iconStyleData: IconStyleData(
+                  icon: Icon(Icons.arrow_drop_down, color: Colors.grey[700]),
+                ),
+                buttonStyleData: ButtonStyleData(
+                  // amo nadi - intrinsic height lets the button grow to fit 2-line hints naturally
+                  height: null,
+                  padding: EdgeInsets.zero,
+                  overlayColor: WidgetStateProperty.all(Colors.transparent),
+                ),
+                menuItemStyleData: const MenuItemStyleData(height: 48),
+                dropdownStyleData: DropdownStyleData(
+                  offset: const Offset(0, -6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8, offset: const Offset(0, 4)),
+                    ],
+                  ),
+                  maxHeight: 200,
+                ),
+                items: List.generate(
+                  items.length,
+                  (i) => DropdownMenuItem<String>(value: valueIds[i], child: Text(items[i])),
+                ),
+                selectedItemBuilder: (context) {
+                  return List.generate(items.length, (i) {
+                    // amo nadi - only show hint name, no subtitle, avoids overflow on long names
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        hint,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    );
+                  });
+                },
+                onChanged: (value) {
+                  if (value == null) return;
+                  final int pos = valueIds.indexOf(value);
+                  final String displayName = pos >= 0 ? items[pos] : value;
+                  setState(() {
+                    _dropdownValues[index] = value;
+                    _selectedCategoryKey = categoryKey;
+                    _selectedServiceType = displayName;
+                    _directPdfPath = null;
+                  });
+                },
+              ),
+            ),
+          ),
         );
       },
     );
   }
 
   Widget _buildCategoryButton({required String label, required String categoryKey}) {
-    // amo nadi - hover highlight for category buttons
+    // amo nadi - hover highlight, declared outside builder so it persists
+    bool hovered = false;
     return StatefulBuilder(
       builder: (context, setHover) {
-        bool hovered = false;
         return MouseRegion(
           // amo nadi - light green on hover
           onEnter: (_) => setHover(() => hovered = true),
